@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getProfile();
+    //  getProfile();
     // if (
     //   [
     //     "/chat-category",

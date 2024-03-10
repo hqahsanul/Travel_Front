@@ -11,11 +11,11 @@ import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import { fixAbbrivation } from "../../helper/apiConfig";
 import LoaderContext from "../../context/LoaderContext";
+import ListContext from "../../context/ListContext";
 
 const HomePage = () => {
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
-  const [fromSuggestions, setFromSuggestions] = useState([]);
   const [toSuggestions, setToSuggestions] = useState([]);
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
@@ -29,6 +29,8 @@ const HomePage = () => {
   const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
   const passengerDropdownRef = useRef(null);
   const { setLoading, loading } = useContext(LoaderContext);
+  const { getSearchList, list, setList, fromSuggestions, setFromSuggestions } =
+    useContext(ListContext);
 
   const navigate = useNavigate();
 
@@ -88,35 +90,50 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    const getSearchList = async (query) => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}${
-            ApiPath.getFlightSearchList
-          }${query}`
-        );
-        if (
-          response.data &&
-          response.data.result &&
-          response.data.result.length > 0
-        ) {
-          return response.data.result;
-        }
-        return [];
-      } catch (error) {
-        console.error("Error fetching search list:", error);
-        return [];
-      }
-    };
+    // console.log();
+  }, [list]);
+  
+  useEffect(() => {
+    console.log("fromSuggestions", fromSuggestions);
+  }, [fromSuggestions]);
+
+  useEffect(() => {
+    // const getSearchList = async (query) => {
+    //   try {
+    //     const response = await axios.get(
+    //       `${import.meta.env.VITE_APP_API_BASE_URL}${
+    //         ApiPath.getFlightSearchList
+    //       }${query}`
+    //     );
+    //     if (
+    //       response.data &&
+    //       response.data.result &&
+    //       response.data.result.length > 0
+    //     ) {
+    //       console.log("Search", response.data.result);
+
+    //       return response.data.result;
+    //     }
+    //     return [];
+    //   } catch (error) {
+    //     console.error("Error fetching search list:", error);
+    //     return [];
+    //   }
+    // };
 
     if (fromValue.length > 0) {
-      getSearchList(fromValue).then((result) => setFromSuggestions(result));
-    }
+      console.log(fromValue, "lsalalaal", fromSuggestions);
 
-    if (toValue.length > 0) {
-      getSearchList(toValue).then((result) => setToSuggestions(result));
+      getSearchList(fromValue, "from");
+      // getSearchList(fromValue).then((result) => setFromSuggestions(result));
     }
-  }, [fromValue, toValue]);
+  }, [fromValue]);
+
+  useEffect(() => {
+    if (toValue.length > 0) {
+      // getSearchList(toValue).then((result) => setToSuggestions(result));
+    }
+  }, [toValue]);
 
   const handleFromInputChange = (e) => {
     const inputValue = e.target.value;
