@@ -16,7 +16,6 @@ import ListContext from "../../context/ListContext";
 const HomePage = () => {
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
-  const [toSuggestions, setToSuggestions] = useState([]);
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -29,8 +28,15 @@ const HomePage = () => {
   const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
   const passengerDropdownRef = useRef(null);
   const { setLoading, loading } = useContext(LoaderContext);
-  const { getSearchList, list, setList, fromSuggestions, setFromSuggestions } =
-    useContext(ListContext);
+  const {
+    getSearchList,
+    list,
+    setList,
+    fromSuggestions,
+    setFromSuggestions,
+    toSuggestions,
+    setToSuggestions,
+  } = useContext(ListContext);
 
   const navigate = useNavigate();
 
@@ -89,58 +95,18 @@ const HomePage = () => {
     setSelectedDate(e.target.value);
   };
 
-  useEffect(() => {
-    // console.log();
-  }, [list]);
-  
-  useEffect(() => {
-    console.log("fromSuggestions", fromSuggestions);
-  }, [fromSuggestions]);
-
-  useEffect(() => {
-    // const getSearchList = async (query) => {
-    //   try {
-    //     const response = await axios.get(
-    //       `${import.meta.env.VITE_APP_API_BASE_URL}${
-    //         ApiPath.getFlightSearchList
-    //       }${query}`
-    //     );
-    //     if (
-    //       response.data &&
-    //       response.data.result &&
-    //       response.data.result.length > 0
-    //     ) {
-    //       console.log("Search", response.data.result);
-
-    //       return response.data.result;
-    //     }
-    //     return [];
-    //   } catch (error) {
-    //     console.error("Error fetching search list:", error);
-    //     return [];
-    //   }
-    // };
-
-    if (fromValue.length > 0) {
-      console.log(fromValue, "lsalalaal", fromSuggestions);
-
-      getSearchList(fromValue, "from");
-      // getSearchList(fromValue).then((result) => setFromSuggestions(result));
-    }
-  }, [fromValue]);
-
-  useEffect(() => {
-    if (toValue.length > 0) {
-      // getSearchList(toValue).then((result) => setToSuggestions(result));
-    }
-  }, [toValue]);
-
   const handleFromInputChange = (e) => {
     const inputValue = e.target.value;
     setFromValue(inputValue);
     setShowFromDropdown(false);
     if (inputValue.length > 0) {
-      setShowFromDropdown(fromSuggestions.length > 0);
+      getSearchList(fromValue, "from").then((result) => {
+        console.log("ddddd", result);
+
+        if (result) {
+          setShowFromDropdown(result.length > 0);
+        }
+      });
     }
   };
 
@@ -149,7 +115,9 @@ const HomePage = () => {
     setToValue(inputValue);
     setShowToDropdown(false);
     if (inputValue.length > 0) {
-      setShowToDropdown(toSuggestions.length > 0);
+      getSearchList(fromValue, "to").then((result) => {
+        setShowToDropdown(result.length > 0);
+      });
     }
   };
 
@@ -432,8 +400,8 @@ const HomePage = () => {
                                                 <input
                                                   type="text"
                                                   value={fromValue}
-                                                  onChange={
-                                                    handleFromInputChange
+                                                  onChange={(e) =>
+                                                    handleFromInputChange(e)
                                                   }
                                                   className="form-control"
                                                   placeholder="Type Departure City"
@@ -503,7 +471,9 @@ const HomePage = () => {
                                                   )}
                                                   type="text"
                                                   value={toValue}
-                                                  onChange={handleToInputChange}
+                                                  onChange={(e) =>
+                                                    handleToInputChange(e)
+                                                  }
                                                   className="form-control"
                                                   placeholder="Type Destination City"
                                                   onFocus={() =>

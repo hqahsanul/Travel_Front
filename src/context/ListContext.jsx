@@ -7,7 +7,8 @@ const ListContext = createContext();
 export default ListContext;
 export const ListProvider = ({ children }) => {
   const [list, setList] = useState([]);
-  const [fromSuggestions, setFromSuggestions] = useState([]);
+  let [fromSuggestions, setFromSuggestions] = useState([]);
+  const [toSuggestions, setToSuggestions] = useState([]);
 
   const location = useLocation();
   const getSearchList = async (parms, type) => {
@@ -15,11 +16,13 @@ export const ListProvider = ({ children }) => {
     const searchList = await apiGet(
       ApiPath.getFlightSearchList + (parms ? parms : "")
     );
-    if (searchList.length > 0) {
+    if (searchList && searchList.length > 0) {
       console.log("Search", searchList, type);
-      setList(searchList);
+
       if (type && type == "from") {
         setFromSuggestions(searchList);
+      } else if (type && type == "to") {
+        setToSuggestions(searchList);
       }
       return searchList;
     }
@@ -29,17 +32,17 @@ export const ListProvider = ({ children }) => {
     getSearchList();
   }, []);
 
+  let contextData = {
+    getSearchList,
+    list,
+    setList,
+    fromSuggestions,
+    setFromSuggestions,
+    toSuggestions,
+    setToSuggestions,
+  };
+
   return (
-    <ListContext.Provider
-      value={{
-        getSearchList,
-        list,
-        setList,
-        fromSuggestions,
-        setFromSuggestions,
-      }}
-    >
-      {children}
-    </ListContext.Provider>
+    <ListContext.Provider value={contextData}>{children}</ListContext.Provider>
   );
 };
