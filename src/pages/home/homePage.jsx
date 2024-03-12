@@ -91,52 +91,80 @@ const HomePage = () => {
     setSelectedDate(e.target.value);
   };
 
-  useEffect(() => {
-    const getSearchList = async (query) => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_BASE_URL}${
-            ApiPath.getFlightSearchList
-          }${query}`
-        );
-        if (
-          response.data &&
-          response.data.result &&
-          response.data.result.length > 0
-        ) {
-          return response.data.result;
-        }
-        return [];
-      } catch (error) {
-        console.error("Error fetching search list:", error);
+  const getSearchList = async (query) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_APP_API_BASE_URL}${
+          ApiPath.getFlightSearchList
+        }${query}`
+      );
+      if (
+        response.data &&
+        response.data.result &&
+        response.data.result.length > 0
+      ) {
+        return response.data.result;
+      } else {
         return [];
       }
-    };
-
-    if (fromValue.length > 0) {
-      getSearchList(fromValue).then((result) => setFromSuggestions(result));
+    } catch (error) {
+      console.error("Error fetching search list:", error);
+      return [];
     }
+  };
 
-    if (toValue.length > 0) {
-      getSearchList(toValue).then((result) => setToSuggestions(result));
+  // useEffect(() => {
+  //   if (fromValue.length > 0) {
+  //     console.log("FromLog", fromValue);
+  //     getSearchList(fromValue).then((result) => setFromSuggestions(result));
+  //   }
+
+  //   if (toValue.length > 0) {
+  //     console.log("toValue", toValue);
+
+  //     getSearchList(toValue).then((result) => setToSuggestions(result));
+  //   }
+  // }, [fromValue, toValue]);
+
+  useEffect(() => {
+    if (fromSuggestions.length > 0) {
+      setShowFromDropdown(true);
+    } else {
+      setShowFromDropdown(false);
     }
-  }, [fromValue, toValue]);
+  }, [fromSuggestions]);
+
+  useEffect(() => {
+    if (toSuggestions.length > 0) {
+      setShowToDropdown(true);
+    } else {
+      setShowToDropdown(false);
+    }
+  }, [toSuggestions]);
 
   const handleFromInputChange = (e) => {
     const inputValue = e.target.value;
+
     setFromValue(inputValue);
-    setShowFromDropdown(false);
+
     if (inputValue.length > 0) {
-      setShowFromDropdown(fromSuggestions.length > 0);
+      getSearchList(inputValue).then((result) => {
+        setFromSuggestions(result);
+      });
+      setShowFromDropdown(inputValue.length > 0);
+    } else {
+      setShowFromDropdown(false);
     }
   };
 
   const handleToInputChange = (e) => {
     const inputValue = e.target.value;
     setToValue(inputValue);
-    setShowToDropdown(false);
     if (inputValue.length > 0) {
-      setShowToDropdown(toSuggestions.length > 0);
+      getSearchList(inputValue).then((result) => setToSuggestions(result));
+      setShowToDropdown(inputValue.length > 0);
+    } else {
+      setShowToDropdown(false);
     }
   };
 
