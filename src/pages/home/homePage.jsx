@@ -16,6 +16,8 @@ import ListContext from "../../context/ListContext";
 const HomePage = () => {
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
+  const [fromSuggestions, setFromSuggestions] = useState([]);
+  const [toSuggestions, setToSuggestions] = useState([]);
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
@@ -28,15 +30,9 @@ const HomePage = () => {
   const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
   const passengerDropdownRef = useRef(null);
   const { setLoading, loading } = useContext(LoaderContext);
-  const {
-    getSearchList,
-    list,
-    setList,
-    fromSuggestions,
-    setFromSuggestions,
-    toSuggestions,
-    setToSuggestions,
-  } = useContext(ListContext);
+
+  const { getFlightListData, flightListData, toursitData } =
+    useContext(ListContext);
 
   const navigate = useNavigate();
 
@@ -95,18 +91,43 @@ const HomePage = () => {
     setSelectedDate(e.target.value);
   };
 
+  useEffect(() => {
+    const getSearchList = async (query) => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_APP_API_BASE_URL}${
+            ApiPath.getFlightSearchList
+          }${query}`
+        );
+        if (
+          response.data &&
+          response.data.result &&
+          response.data.result.length > 0
+        ) {
+          return response.data.result;
+        }
+        return [];
+      } catch (error) {
+        console.error("Error fetching search list:", error);
+        return [];
+      }
+    };
+
+    if (fromValue.length > 0) {
+      getSearchList(fromValue).then((result) => setFromSuggestions(result));
+    }
+
+    if (toValue.length > 0) {
+      getSearchList(toValue).then((result) => setToSuggestions(result));
+    }
+  }, [fromValue, toValue]);
+
   const handleFromInputChange = (e) => {
     const inputValue = e.target.value;
     setFromValue(inputValue);
     setShowFromDropdown(false);
     if (inputValue.length > 0) {
-      getSearchList(fromValue, "from").then((result) => {
-        console.log("ddddd", result);
-
-        if (result) {
-          setShowFromDropdown(result.length > 0);
-        }
-      });
+      setShowFromDropdown(fromSuggestions.length > 0);
     }
   };
 
@@ -115,9 +136,7 @@ const HomePage = () => {
     setToValue(inputValue);
     setShowToDropdown(false);
     if (inputValue.length > 0) {
-      getSearchList(fromValue, "to").then((result) => {
-        setShowToDropdown(result.length > 0);
-      });
+      setShowToDropdown(toSuggestions.length > 0);
     }
   };
 
@@ -181,25 +200,11 @@ const HomePage = () => {
 
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_BASE_URL}${ApiPath.getFlightData}`,
-        {
-          params: data,
-        }
-      );
-      if (
-        response.data &&
-        response.data.data &&
-        response.data.data.Search &&
-        response.data.data.Search.FlightDataList &&
-        response.data.data.Search.FlightDataList.JourneyList
-      ) {
-        navigate("/flight-list", {
-          state: {
-            flightData: response.data.data.Search.FlightDataList.JourneyList[0],
-            toursitData: tourData,
-          },
-        });
+      const response = await getFlightListData(data, tourData);
+      if (response?.length > 0) {
+        localStorage.setItem("flightPayload", JSON.stringify(data));
+        localStorage.setItem("toursitPayload", JSON.stringify(tourData));
+        navigate("/flight-list");
       }
     } catch (error) {
       console.error("Error fetching flight data list:", error);
@@ -400,8 +405,8 @@ const HomePage = () => {
                                                 <input
                                                   type="text"
                                                   value={fromValue}
-                                                  onChange={(e) =>
-                                                    handleFromInputChange(e)
+                                                  onChange={
+                                                    handleFromInputChange
                                                   }
                                                   className="form-control"
                                                   placeholder="Type Departure City"
@@ -471,9 +476,7 @@ const HomePage = () => {
                                                   )}
                                                   type="text"
                                                   value={toValue}
-                                                  onChange={(e) =>
-                                                    handleToInputChange(e)
-                                                  }
+                                                  onChange={handleToInputChange}
                                                   className="form-control"
                                                   placeholder="Type Destination City"
                                                   onFocus={() =>

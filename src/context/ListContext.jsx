@@ -6,40 +6,26 @@ import { useLocation, useNavigate } from "react-router-dom";
 const ListContext = createContext();
 export default ListContext;
 export const ListProvider = ({ children }) => {
-  const [list, setList] = useState([]);
-  let [fromSuggestions, setFromSuggestions] = useState([]);
-  const [toSuggestions, setToSuggestions] = useState([]);
+  const [flightListData, setFlightListData] = useState([]);
+  const [toursitData, setToursitData] = useState();
 
-  const location = useLocation();
-  const getSearchList = async (parms, type) => {
-    console.log("parms", parms, "type", type);
-    const searchList = await apiGet(
-      ApiPath.getFlightSearchList + (parms ? parms : "")
-    );
-    if (searchList && searchList.length > 0) {
-      console.log("Search", searchList, type);
-
-      if (type && type == "from") {
-        setFromSuggestions(searchList);
-      } else if (type && type == "to") {
-        setToSuggestions(searchList);
-      }
-      return searchList;
+  const getFlightListData = async (data, toursitData) => {
+    try {
+      const response = await apiGet(ApiPath.getFlightData, data);
+      setFlightListData(
+        response.data?.Search?.FlightDataList?.JourneyList?.[0]
+      );
+      setToursitData(toursitData);
+      return response.data?.Search?.FlightDataList?.JourneyList?.[0];
+    } catch (error) {
+      console.log("Failed to get flight list data", error);
     }
   };
 
-  useEffect(() => {
-    getSearchList();
-  }, []);
-
   let contextData = {
-    getSearchList,
-    list,
-    setList,
-    fromSuggestions,
-    setFromSuggestions,
-    toSuggestions,
-    setToSuggestions,
+    getFlightListData,
+    flightListData,
+    toursitData,
   };
 
   return (

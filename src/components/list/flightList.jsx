@@ -7,26 +7,65 @@ import axios from "axios";
 import ApiPath from "../../utils/ApiPath";
 import { apiPost } from "../../utils/ApiFetch";
 import LoaderContext from "../../context/LoaderContext";
+import ListContext from "../../context/ListContext";
+
 import moment from "moment";
 import { formatDuration } from "../../helper/apiConfig";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const FlightList = () => {
   const { setLoading, loading } = useContext(LoaderContext);
+  const { getFlightListData, flightListData, toursitData } =
+    useContext(ListContext);
+  const Navigate = useNavigate();
+
   const [searchListData, setSearchListData] = useState([]);
   const [toursitDetails, setToursitDetails] = useState();
 
-  const location = useLocation();
-
   useEffect(() => {
-    const { flightData, toursitData } = location.state;
-    console.log("flighData", flightData);
-    console.log("toursitDetails", toursitData);
-    if (flightData && toursitData) {
-      setSearchListData(flightData);
+    console.log("useEffect called");
+    console.log("flighData", flightListData);
+    console.log("toursitData", toursitData);
+
+    const fetchFlightListData = async () => {
+      try {
+        setLoading(true);
+
+        // Retrieve data from localStorage with default values
+        const apiPayload = localStorage.getItem("flightPayload") || "{}";
+        const toursitPayload = localStorage.getItem("toursitPayload") || "{}";
+
+        console.log("flightPayload", apiPayload);
+        console.log("toursitPayload", toursitPayload);
+
+        // Use the retrieved objects directly
+        const apiPayloadObject = JSON.parse(apiPayload);
+        const toursitPayloadObject = JSON.parse(toursitPayload);
+
+        // Call the asynchronous function and await the result
+        const response = await getFlightListData(apiPayloadObject);
+        console.log("response", response);
+
+        // Set state based on the response
+        setSearchListData(response);
+        setToursitDetails(toursitPayloadObject);
+      } catch (error) {
+        console.log("Error while fetching flight list data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Check if flightListData is undefined or has a length less than or equal to 0
+    if (!flightListData || (flightListData.length <= 0 && !toursitData)) {
+      console.log("entering unavailable");
+      fetchFlightListData();
+    } else {
+      // If flightListData and toursitData are not undefined, set the state
+      setSearchListData(flightListData);
       setToursitDetails(toursitData);
     }
-  }, []);
+  }, [flightListData, toursitData]);
 
   // Memoize the searchListData using useMemo
 
@@ -611,12 +650,14 @@ const FlightList = () => {
                                         ? "Refundable"
                                         : "Non-Refundable"}
                                     </p>
-                                    <a
-                                      href="/flight-booking"
+                                    <button
+                                      onClick={() =>
+                                        Navigate("/flight-booking")
+                                      }
                                       className="btn btn-info"
                                     >
                                       Book Now
-                                    </a>
+                                    </button>
                                   </div>
                                 </div>
                               </div>
