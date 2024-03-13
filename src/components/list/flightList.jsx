@@ -12,6 +12,8 @@ import ListContext from "../../context/ListContext";
 import moment from "moment";
 import { formatDuration } from "../../helper/apiConfig";
 import { useLocation, useNavigate } from "react-router-dom";
+import { isUserLoggedIn } from "../../helper/apiConfig";
+import owlOptions from "../../others/owlOptions";
 
 const FlightList = () => {
   const { setLoading, loading } = useContext(LoaderContext);
@@ -67,153 +69,14 @@ const FlightList = () => {
     }
   }, [flightListData, toursitData]);
 
-  // Memoize the searchListData using useMemo
+  const handleBooking = () => {
+    Navigate("/flight-booking");
+  };
 
   return (
     <main>
-      <div className="p-relative max-w-full">
-        <header class="main_header_arae list_header">
-          <div class="topbar-area">
-            <div class="container">
-              <div class="row align-items-center">
-                <div class="col-lg-6 col-md-7">
-                  <ul class="topbar-list d-md-block d-none">
-                    <li>
-                      <a href="#!">
-                        <i class="fab fa-facebook"></i>
-                      </a>
-                      <a href="#!">
-                        <i class="fab fa-twitter-square"></i>
-                      </a>
-                      <a href="#!">
-                        <i class="fab fa-instagram"></i>
-                      </a>
-                      <a href="#!">
-                        <i class="fab fa-linkedin"></i>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#!">
-                        <span>+011 234 567 89</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#!">
-                        <span>contact@domain.com</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-6 col-md-5">
-                  <ul class="topbar-others-options">
-                    <li>
-                      <a class="myaccount" href="#">
-                        <i class="fa-regular fa-circle-user me-1"></i> My
-                        Account{" "}
-                      </a>
-                    </li>
-                    <li>
-                      <div class="dropdown language-option">
-                        <button
-                          class="dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <span class="lang-name"></span>
-                        </button>
-                        <div class="dropdown-menu language-dropdown-menu">
-                          <a class="dropdown-item" href="#">
-                            USD
-                          </a>
-                          <a class="dropdown-item" href="#">
-                            BD
-                          </a>
-                          <a class="dropdown-item" href="#">
-                            URO
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="navbar-area">
-            <div class="main-responsive-nav">
-              <div class="container">
-                <div class="main-responsive-menu">
-                  <div class="logo">
-                    <a href="index.html">
-                      <img src={images.logo} alt="logo" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="main-navbar">
-              <div class="container">
-                <nav class="navbar navbar-expand-md navbar-light">
-                  <a class="navbar-brand" href="index.html">
-                    <img src={images.logo} alt="logo" />
-                  </a>
-                  <div
-                    class="collapse navbar-collapse mean-menu justify-content-end"
-                    id="navbarSupportedContent"
-                  >
-                    <ul class="navbar-nav">
-                      <li class="nav-item">
-                        <a href="#" class="nav-link active">
-                          {" "}
-                          Home{" "}
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          {" "}
-                          Flights{" "}
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Hotels
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Buses
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Transfers{" "}
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Car{" "}
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Activities{" "}
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Holidays
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </header>
-
+      <div className="max-w-full">
+        <Navbar />
         {toursitDetails && (
           <section className="listing_section">
             <div className="container">
@@ -489,7 +352,10 @@ const FlightList = () => {
                   <div className="top_airline d-flex">
                     <div className="top_airline_left"> All Airline </div>
                     <div className="top_airline_right">
-                      <div className=" logo_warp owl-carousel owl-theme">
+                      <OwlCarousel
+                        className="owl-carousel owl-theme"
+                        {...owlOptions.option4}
+                      >
                         <div className="item">
                           <div className="logo_box">
                             <div className="imgemtrx">
@@ -545,7 +411,7 @@ const FlightList = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </OwlCarousel>
                     </div>
                   </div>
                   <div className="airline_box">
@@ -651,9 +517,7 @@ const FlightList = () => {
                                         : "Non-Refundable"}
                                     </p>
                                     <button
-                                      onClick={() =>
-                                        Navigate("/flight-booking")
-                                      }
+                                      onClick={handleBooking}
                                       className="btn btn-info"
                                     >
                                       Book Now

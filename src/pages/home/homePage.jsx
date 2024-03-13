@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import images from "../../assets/images";
-import Navbar from "../../components/navbar/NavBar";
+import Navbar2 from "../../components/navbar/Navbar2";
 import OwlCarousel from "react-owl-carousel";
 import AuthContext from "../../context/AuthContext";
 import owlOptions from "../../others/owlOptions";
@@ -12,6 +12,7 @@ import { useForm, Controller } from "react-hook-form";
 import { fixAbbrivation } from "../../helper/apiConfig";
 import LoaderContext from "../../context/LoaderContext";
 import ListContext from "../../context/ListContext";
+import Footer from "../../components/footer/footer";
 
 const HomePage = () => {
   const [fromValue, setFromValue] = useState("");
@@ -91,7 +92,7 @@ const HomePage = () => {
     setSelectedDate(e.target.value);
   };
 
-  const getSearchList = async (query) => {
+  const getFlightSearchList = async (query) => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_APP_API_BASE_URL}${
@@ -113,19 +114,6 @@ const HomePage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (fromValue.length > 0) {
-  //     console.log("FromLog", fromValue);
-  //     getSearchList(fromValue).then((result) => setFromSuggestions(result));
-  //   }
-
-  //   if (toValue.length > 0) {
-  //     console.log("toValue", toValue);
-
-  //     getSearchList(toValue).then((result) => setToSuggestions(result));
-  //   }
-  // }, [fromValue, toValue]);
-
   useEffect(() => {
     if (fromSuggestions.length > 0) {
       setShowFromDropdown(true);
@@ -144,11 +132,12 @@ const HomePage = () => {
 
   const handleFromInputChange = (e) => {
     const inputValue = e.target.value;
+    console.log("input value", inputValue);
 
     setFromValue(inputValue);
 
     if (inputValue.length > 0) {
-      getSearchList(inputValue).then((result) => {
+      getFlightSearchList(inputValue).then((result) => {
         setFromSuggestions(result);
       });
       setShowFromDropdown(inputValue.length > 0);
@@ -161,7 +150,9 @@ const HomePage = () => {
     const inputValue = e.target.value;
     setToValue(inputValue);
     if (inputValue.length > 0) {
-      getSearchList(inputValue).then((result) => setToSuggestions(result));
+      getFlightSearchList(inputValue).then((result) =>
+        setToSuggestions(result)
+      );
       setShowToDropdown(inputValue.length > 0);
     } else {
       setShowToDropdown(false);
@@ -197,56 +188,57 @@ const HomePage = () => {
     formState: { errors },
   } = useForm();
 
-  const handleOnyWayTrip = async () => {
-    const data = {
-      AdultCount: adultCount.toString(),
-      ChildCount: childCount.toString(),
-      InfantCount: infantCount.toString(),
-      JourneyType: "OneWay",
-      PreferredAirlines: [""],
-      CabinClass: selectedCabin,
-      Segments: [
-        {
-          Origin: abbrFromValue,
-          Destination: abbrToValue,
-          DepartureDate: selectedDate,
-        },
-      ],
-    };
+  const handleOnyWayTrip = async (data) => {
+    console.log("data", data);
+    // const data = {
+    //   AdultCount: adultCount.toString(),
+    //   ChildCount: childCount.toString(),
+    //   InfantCount: infantCount.toString(),
+    //   JourneyType: "OneWay",
+    //   PreferredAirlines: [""],
+    //   CabinClass: selectedCabin,
+    //   Segments: [
+    //     {
+    //       Origin: abbrFromValue,
+    //       Destination: abbrToValue,
+    //       DepartureDate: selectedDate,
+    //     },
+    //   ],
+    // };
 
-    const tourData = {
-      AdultCount: adultCount.toString(),
-      ChildCount: childCount.toString(),
-      InfantCount: infantCount.toString(),
-      JourneyType: "OneWay",
-      DepartureDate: selectedDate,
-      departureCity: fromValue,
-      departurAbbr: abbrFromValue,
-      destinationCity: toValue,
-      destinationAbbr: abbrToValue,
-    };
+    // const tourData = {
+    //   AdultCount: adultCount.toString(),
+    //   ChildCount: childCount.toString(),
+    //   InfantCount: infantCount.toString(),
+    //   JourneyType: "OneWay",
+    //   DepartureDate: selectedDate,
+    //   departureCity: fromValue,
+    //   departurAbbr: abbrFromValue,
+    //   destinationCity: toValue,
+    //   destinationAbbr: abbrToValue,
+    // };
 
-    try {
-      setLoading(true);
-      const response = await getFlightListData(data, tourData);
-      if (response?.length > 0) {
-        localStorage.setItem("flightPayload", JSON.stringify(data));
-        localStorage.setItem("toursitPayload", JSON.stringify(tourData));
-        navigate("/flight-list");
-      }
-    } catch (error) {
-      console.error("Error fetching flight data list:", error);
-      return [];
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   setLoading(true);
+    //   const response = await getFlightListData(data, tourData);
+    //   if (response?.length > 0) {
+    //     localStorage.setItem("flightPayload", JSON.stringify(data));
+    //     localStorage.setItem("toursitPayload", JSON.stringify(tourData));
+    //     navigate("/flight-list");
+    //   }
+    // } catch (error) {
+    //   console.error("Error fetching flight data list:", error);
+    //   return [];
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
     <>
       <main>
         <div className="max-w-full">
-          <Navbar />
+          <Navbar2 />
           <section className="slider position-relative z-2">
             <OwlCarousel className="owl-carousel" {...owlOptions.option1}>
               <div className="item">
@@ -429,56 +421,64 @@ const HomePage = () => {
                                           <div className="col-lg-3 col-md-6 col-sm-12 col-12">
                                             <div className="flight_Search_boxed">
                                               <p>From</p>
-                                              <div className="dropdown">
-                                                <input
-                                                  type="text"
-                                                  value={fromValue}
-                                                  onChange={
-                                                    handleFromInputChange
-                                                  }
-                                                  className="form-control"
-                                                  placeholder="Type Departure City"
-                                                  onFocus={() =>
-                                                    setShowFromDropdown(false)
-                                                  } // Close the dropdown on initial click
-                                                />
-                                                <div
-                                                  className={`dropdown-menu ${
-                                                    showFromDropdown
-                                                      ? "show"
-                                                      : ""
-                                                  }`}
-                                                  style={{
-                                                    maxHeight: "240px",
-                                                    overflowY: "auto",
-                                                  }}
-                                                >
-                                                  {fromSuggestions.map(
-                                                    (city, index) => (
-                                                      <div key={index}>
-                                                        <button
-                                                          className="dropdown-item"
-                                                          onClick={() =>
-                                                            handleFromSuggestionClick(
-                                                              city.City,
-                                                              setFromValue,
-                                                              setShowFromDropdown,
-                                                              city.Abbr
-                                                            )
-                                                          }
-                                                        >
-                                                          {`${city.City} (${city.Abbr})`}
-                                                        </button>
-                                                        {index <
-                                                          fromSuggestions.length -
-                                                            1 && (
-                                                          <div className="dropdown-divider"></div>
-                                                        )}
-                                                      </div>
-                                                    )
-                                                  )}
-                                                </div>
-                                              </div>
+                                              <Controller
+                                                name="fromValue"
+                                                control={control}
+                                                render={({ field }) => (
+                                                  <div className="dropdown">
+                                                    <input
+                                                      type="text"
+                                                      {...field}
+                                                      className="form-control"
+                                                      placeholder="Type Departure City"
+                                                      onFocus={() =>
+                                                        setShowFromDropdown(
+                                                          false
+                                                        )
+                                                      }
+                                                      onChange={(e) =>
+                                                        handleFromInputChange(e)
+                                                      } // Call the function on blur
+                                                    />
+                                                    <div
+                                                      className={`dropdown-menu ${
+                                                        showFromDropdown
+                                                          ? "show"
+                                                          : ""
+                                                      }`}
+                                                      style={{
+                                                        maxHeight: "240px",
+                                                        overflowY: "auto",
+                                                      }}
+                                                    >
+                                                      {fromSuggestions.map(
+                                                        (city, index) => (
+                                                          <div key={index}>
+                                                            <button
+                                                              className="dropdown-item"
+                                                              onClick={() =>
+                                                                handleFromSuggestionClick(
+                                                                  city.City,
+                                                                  setFromValue,
+                                                                  setShowFromDropdown,
+                                                                  city.Abbr
+                                                                )
+                                                              }
+                                                            >
+                                                              {`${city.City} (${city.Abbr})`}
+                                                            </button>
+                                                            {index <
+                                                              fromSuggestions.length -
+                                                                1 && (
+                                                              <div className="dropdown-divider"></div>
+                                                            )}
+                                                          </div>
+                                                        )
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                )}
+                                              />
 
                                               <span>
                                                 JFK - John F. Kennedy
@@ -493,59 +493,62 @@ const HomePage = () => {
                                           <div className="col-lg-3 col-md-6 col-sm-12 col-12">
                                             <div className="flight_Search_boxed">
                                               <p>To</p>
-                                              <div className="dropdown">
-                                                <input
-                                                  {...register(
-                                                    "destinationCity",
-                                                    {
-                                                      required:
-                                                        "Destination City is required",
-                                                    }
-                                                  )}
-                                                  type="text"
-                                                  value={toValue}
-                                                  onChange={handleToInputChange}
-                                                  className="form-control"
-                                                  placeholder="Type Destination City"
-                                                  onFocus={() =>
-                                                    setShowToDropdown(false)
-                                                  } // Close the dropdown on initial click
-                                                />
-                                                <div
-                                                  className={`dropdown-menu ${
-                                                    showToDropdown ? "show" : ""
-                                                  }`}
-                                                  style={{
-                                                    maxHeight: "240px",
-                                                    overflowY: "auto",
-                                                  }}
-                                                >
-                                                  {toSuggestions.map(
-                                                    (city, index) => (
-                                                      <div key={index}>
-                                                        <button
-                                                          className="dropdown-item"
-                                                          onClick={() =>
-                                                            handleToSuggestionClick(
-                                                              city.City,
-                                                              setToValue,
-                                                              setShowToDropdown,
-                                                              city.Abbr
-                                                            )
-                                                          }
-                                                        >
-                                                          {`${city.City} (${city.Abbr})`}
-                                                        </button>
-                                                        {index <
-                                                          toSuggestions.length -
-                                                            1 && (
-                                                          <div className="dropdown-divider"></div>
-                                                        )}
-                                                      </div>
-                                                    )
-                                                  )}
-                                                </div>
-                                              </div>
+                                              <Controller
+                                                name="toValue"
+                                                control={control}
+                                                render={({ field }) => (
+                                                  <div className="dropdown">
+                                                    <input
+                                                      type="text"
+                                                      {...field}
+                                                      className="form-control"
+                                                      placeholder="Type Destination City"
+                                                      onFocus={() =>
+                                                        setShowToDropdown(false)
+                                                      }
+                                                      onChange={(e) =>
+                                                        handleToInputChange(e)
+                                                      } // Call the function on blur
+                                                    />
+                                                    <div
+                                                      className={`dropdown-menu ${
+                                                        showToDropdown
+                                                          ? "show"
+                                                          : ""
+                                                      }`}
+                                                      style={{
+                                                        maxHeight: "240px",
+                                                        overflowY: "auto",
+                                                      }}
+                                                    >
+                                                      {toSuggestions.map(
+                                                        (city, index) => (
+                                                          <div key={index}>
+                                                            <button
+                                                              className="dropdown-item"
+                                                              onClick={() =>
+                                                                handleToSuggestionClick(
+                                                                  city.City,
+                                                                  setToValue,
+                                                                  setShowToDropdown,
+                                                                  city.Abbr
+                                                                )
+                                                              }
+                                                            >
+                                                              {`${city.City} (${city.Abbr})`}
+                                                            </button>
+                                                            {index <
+                                                              toSuggestions.length -
+                                                                1 && (
+                                                              <div className="dropdown-divider"></div>
+                                                            )}
+                                                          </div>
+                                                        )
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                )}
+                                              />
 
                                               <span>
                                                 LCY, London city airport{" "}
@@ -564,21 +567,17 @@ const HomePage = () => {
                                               <div className="flight_Search_boxed date_flex_area">
                                                 <div className="Journey_date">
                                                   <p>Journey date</p>
-                                                  <input
-                                                    {...register(
-                                                      "journeyDate",
-                                                      {
-                                                        required:
-                                                          "Journey Date is required",
-                                                      }
+                                                  <Controller
+                                                    name="selectedDate"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                      <input
+                                                        type="date"
+                                                        {...field}
+                                                      />
                                                     )}
-                                                    // {errors.journeyDate && <p>{errors.journeyDate.message}</p>}
-                                                    type="date"
-                                                    value={selectedDate} // Replace with your actual state value
-                                                    onChange={(e) =>
-                                                      handleDateChange(e)
-                                                    }
                                                   />
+
                                                   <span>Thursday</span>
                                                 </div>
                                               </div>
@@ -586,230 +585,266 @@ const HomePage = () => {
                                           </div>
                                           <div className="col-lg-2 col-md-6 col-sm-12 col-12">
                                             <div className="flight_Search_boxed dropdown_passenger_area">
-                                              <p>Passenger, Class</p>
-                                              <div
-                                                className="dropdown"
-                                                onClick={
-                                                  togglePassengerDropdown
-                                                }
-                                                ref={passengerDropdownRef}
-                                              >
-                                                <button
-                                                  className="dropdown-toggle final-count"
-                                                  type="button"
-                                                  id="dropdownMenuButton1"
-                                                  data-bs-toggle="dropdown"
-                                                  aria-expanded="false"
-                                                >
-                                                  {adultCount +
-                                                    childCount +
-                                                    infantCount}{" "}
-                                                  Passengers
-                                                </button>
-                                                <div
-                                                  className={`dropdown-menu dropdown_passenger_info ${
-                                                    showPassengerDropdown
-                                                      ? "show"
-                                                      : ""
-                                                  }`}
-                                                  aria-labelledby="dropdownMenuButton1"
-                                                  onClick={stopPropagation}
-                                                >
-                                                  <div className="traveller-calulate-persons">
-                                                    <div className="passengers">
-                                                      <h6>Passengers</h6>
-                                                      <div className="passengers-types">
-                                                        <div className="passengers-type">
-                                                          <div className="text">
-                                                            <span className="count pcount">
-                                                              {adultCount}
-                                                            </span>
-                                                            <div className="type-label">
-                                                              <p>Adult</p>
-                                                              <span>
-                                                                12+ yrs
-                                                              </span>
+                                              <Controller
+                                                name="passengers"
+                                                control={control}
+                                                defaultValue={{
+                                                  adult: 0,
+                                                  child: 0,
+                                                  infant: 0,
+                                                }}
+                                                render={({ field }) => (
+                                                  <div
+                                                    className="dropdown"
+                                                    onClick={
+                                                      togglePassengerDropdown
+                                                    }
+                                                  >
+                                                    <button
+                                                      className="dropdown-toggle final-count"
+                                                      type="button"
+                                                      id="dropdownMenuButton1"
+                                                      data-bs-toggle="dropdown"
+                                                      aria-expanded="false"
+                                                    >
+                                                      {field.value.adult +
+                                                        field.value.child +
+                                                        field.value.infant}{" "}
+                                                      Passengers
+                                                    </button>
+                                                    <div
+                                                      className={`dropdown-menu dropdown_passenger_info ${
+                                                        showPassengerDropdown
+                                                          ? "show"
+                                                          : ""
+                                                      }`}
+                                                      aria-labelledby="dropdownMenuButton1"
+                                                      onClick={stopPropagation}
+                                                    >
+                                                      <div className="traveller-calulate-persons">
+                                                        <div className="passengers">
+                                                          <h6>Passengers</h6>
+                                                          <div className="passengers-types">
+                                                            {/* Adult */}
+                                                            <div className="passengers-type">
+                                                              <div className="text">
+                                                                <span className="count pcount">
+                                                                  {
+                                                                    field.value
+                                                                      .adult
+                                                                  }
+                                                                </span>
+                                                                <div className="type-label">
+                                                                  <p>Adult</p>
+                                                                  <span>
+                                                                    12+ yrs
+                                                                  </span>
+                                                                </div>
+                                                              </div>
+                                                              <div className="button-set">
+                                                                <button
+                                                                  type="button"
+                                                                  className="btn-add"
+                                                                  onClick={() =>
+                                                                    handlePassengerChange(
+                                                                      "adult",
+                                                                      "add"
+                                                                    )
+                                                                  }
+                                                                >
+                                                                  <i className="fas fa-plus"></i>
+                                                                </button>
+                                                                <button
+                                                                  type="button"
+                                                                  className="btn-subtract"
+                                                                  onClick={() =>
+                                                                    handlePassengerChange(
+                                                                      "adult",
+                                                                      "subtract"
+                                                                    )
+                                                                  }
+                                                                >
+                                                                  <i className="fas fa-minus"></i>
+                                                                </button>
+                                                              </div>
+                                                            </div>
+                                                            {/* Child */}
+                                                            <div className="passengers-type">
+                                                              <div className="text">
+                                                                <span className="count ccount">
+                                                                  {
+                                                                    field.value
+                                                                      .child
+                                                                  }
+                                                                </span>
+                                                                <div className="type-label">
+                                                                  <p className="fz14 mb-xs-0">
+                                                                    Children
+                                                                  </p>
+                                                                  <span>
+                                                                    2 - Less
+                                                                    than 12 yrs
+                                                                  </span>
+                                                                </div>
+                                                              </div>
+                                                              <div className="button-set">
+                                                                <button
+                                                                  type="button"
+                                                                  className="btn-add-c"
+                                                                  onClick={() =>
+                                                                    handlePassengerChange(
+                                                                      "child",
+                                                                      "add"
+                                                                    )
+                                                                  }
+                                                                >
+                                                                  <i className="fas fa-plus"></i>
+                                                                </button>
+                                                                <button
+                                                                  type="button"
+                                                                  className="btn-subtract-c"
+                                                                  onClick={() =>
+                                                                    handlePassengerChange(
+                                                                      "child",
+                                                                      "subtract"
+                                                                    )
+                                                                  }
+                                                                >
+                                                                  <i className="fas fa-minus"></i>
+                                                                </button>
+                                                              </div>
+                                                            </div>
+                                                            {/* Infant */}
+                                                            <div className="passengers-type">
+                                                              <div className="text">
+                                                                <span className="count incount">
+                                                                  {
+                                                                    field.value
+                                                                      .infant
+                                                                  }
+                                                                </span>
+                                                                <div className="type-label">
+                                                                  <p className="fz14 mb-xs-0">
+                                                                    Infant
+                                                                  </p>
+                                                                  <span>
+                                                                    Less than 2
+                                                                    yrs
+                                                                  </span>
+                                                                </div>
+                                                              </div>
+                                                              <div className="button-set">
+                                                                <button
+                                                                  type="button"
+                                                                  className="btn-add-in"
+                                                                  onClick={() =>
+                                                                    handlePassengerChange(
+                                                                      "infant",
+                                                                      "add"
+                                                                    )
+                                                                  }
+                                                                >
+                                                                  <i className="fas fa-plus"></i>
+                                                                </button>
+                                                                <button
+                                                                  type="button"
+                                                                  className="btn-subtract-in"
+                                                                  onClick={() =>
+                                                                    handlePassengerChange(
+                                                                      "infant",
+                                                                      "subtract"
+                                                                    )
+                                                                  }
+                                                                >
+                                                                  <i className="fas fa-minus"></i>
+                                                                </button>
+                                                              </div>
                                                             </div>
                                                           </div>
-                                                          <div className="button-set">
-                                                            <button
-                                                              type="button"
-                                                              className="btn-add"
-                                                              onClick={() =>
-                                                                handlePassengerChange(
-                                                                  "adult",
-                                                                  "add"
-                                                                )
-                                                              }
-                                                            >
-                                                              <i className="fas fa-plus"></i>
-                                                            </button>
-                                                            <button
-                                                              type="button"
-                                                              className="btn-subtract"
-                                                              onClick={() =>
-                                                                handlePassengerChange(
-                                                                  "adult",
-                                                                  "subtract"
-                                                                )
-                                                              }
-                                                            >
-                                                              <i className="fas fa-minus"></i>
-                                                            </button>
+                                                        </div>
+                                                        <div className="cabin-selection">
+                                                          <h6>Cabin Class</h6>
+                                                          <div className="cabin-list">
+                                                            <Controller
+                                                              name="selectedCabin"
+                                                              control={control}
+                                                              defaultValue=""
+                                                              render={({
+                                                                field,
+                                                              }) => (
+                                                                <>
+                                                                  <button
+                                                                    type="button"
+                                                                    className={`label-select-btn ${
+                                                                      field.value ===
+                                                                      "Economy"
+                                                                        ? "active"
+                                                                        : ""
+                                                                    }`}
+                                                                    onClick={() =>
+                                                                      handleCabinChange(
+                                                                        "Economy"
+                                                                      )
+                                                                    }
+                                                                  >
+                                                                    <span className="muiButton-label">
+                                                                      Economy
+                                                                    </span>
+                                                                  </button>
+                                                                  <button
+                                                                    type="button"
+                                                                    className={`label-select-btn ${
+                                                                      field.value ===
+                                                                      "Business"
+                                                                        ? "active"
+                                                                        : ""
+                                                                    }`}
+                                                                    onClick={() =>
+                                                                      handleCabinChange(
+                                                                        "Business"
+                                                                      )
+                                                                    }
+                                                                  >
+                                                                    <span className="muiButton-label">
+                                                                      Business
+                                                                    </span>
+                                                                  </button>
+                                                                  <button
+                                                                    type="button"
+                                                                    className={`label-select-btn ${
+                                                                      field.value ===
+                                                                      "First Class"
+                                                                        ? "active"
+                                                                        : ""
+                                                                    }`}
+                                                                    onClick={() =>
+                                                                      handleCabinChange(
+                                                                        "First Class"
+                                                                      )
+                                                                    }
+                                                                  >
+                                                                    <span className="MuiButton-label">
+                                                                      First
+                                                                      Class
+                                                                    </span>
+                                                                  </button>
+                                                                </>
+                                                              )}
+                                                            />
                                                           </div>
                                                         </div>
-                                                        <div className="passengers-type">
-                                                          <div className="text">
-                                                            <span className="count ccount">
-                                                              {childCount}
-                                                            </span>
-                                                            <div className="type-label">
-                                                              <p className="fz14 mb-xs-0">
-                                                                Children
-                                                              </p>
-                                                              <span>
-                                                                2 - Less than 12
-                                                                yrs
-                                                              </span>
-                                                            </div>
-                                                          </div>
-                                                          <div className="button-set">
-                                                            <button
-                                                              type="button"
-                                                              className="btn-add-c"
-                                                              onClick={() =>
-                                                                handlePassengerChange(
-                                                                  "child",
-                                                                  "add"
-                                                                )
-                                                              }
-                                                            >
-                                                              <i className="fas fa-plus"></i>
-                                                            </button>
-                                                            <button
-                                                              type="button"
-                                                              className="btn-subtract-c"
-                                                              onClick={() =>
-                                                                handlePassengerChange(
-                                                                  "child",
-                                                                  "subtract"
-                                                                )
-                                                              }
-                                                            >
-                                                              <i className="fas fa-minus"></i>
-                                                            </button>
-                                                          </div>
-                                                        </div>
-                                                        <div className="passengers-type">
-                                                          <div className="text">
-                                                            <span className="count incount">
-                                                              {infantCount}
-                                                            </span>
-                                                            <div className="type-label">
-                                                              <p className="fz14 mb-xs-0">
-                                                                Infant
-                                                              </p>
-                                                              <span>
-                                                                Less than 2 yrs
-                                                              </span>
-                                                            </div>
-                                                          </div>
-                                                          <div className="button-set">
-                                                            <button
-                                                              type="button"
-                                                              className="btn-add-in"
-                                                              onClick={() =>
-                                                                handlePassengerChange(
-                                                                  "infant",
-                                                                  "add"
-                                                                )
-                                                              }
-                                                            >
-                                                              <i className="fas fa-plus"></i>
-                                                            </button>
-                                                            <button
-                                                              type="button"
-                                                              className="btn-subtract-in"
-                                                              onClick={() =>
-                                                                handlePassengerChange(
-                                                                  "infant",
-                                                                  "subtract"
-                                                                )
-                                                              }
-                                                            >
-                                                              <i className="fas fa-minus"></i>
-                                                            </button>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                    <div className="cabin-selection">
-                                                      <h6>Cabin Class</h6>
-                                                      <div className="cabin-list">
-                                                        <button
-                                                          type="button"
-                                                          className={`label-select-btn ${
-                                                            selectedCabin ===
-                                                            "Economy"
-                                                              ? "active"
-                                                              : ""
-                                                          }`}
-                                                          onClick={() =>
-                                                            handleCabinChange(
-                                                              "Economy"
-                                                            )
-                                                          }
-                                                        >
-                                                          <span className="muiButton-label">
-                                                            Economy
-                                                          </span>
-                                                        </button>
-                                                        <button
-                                                          type="button"
-                                                          className={`label-select-btn ${
-                                                            selectedCabin ===
-                                                            "Business"
-                                                              ? "active"
-                                                              : ""
-                                                          }`}
-                                                          onClick={() =>
-                                                            handleCabinChange(
-                                                              "Business"
-                                                            )
-                                                          }
-                                                        >
-                                                          <span className="muiButton-label">
-                                                            Business
-                                                          </span>
-                                                        </button>
-                                                        <button
-                                                          type="button"
-                                                          className={`label-select-btn ${
-                                                            selectedCabin ===
-                                                            "First Class"
-                                                              ? "active"
-                                                              : ""
-                                                          }`}
-                                                          onClick={() =>
-                                                            handleCabinChange(
-                                                              "First Class"
-                                                            )
-                                                          }
-                                                        >
-                                                          <span className="MuiButton-label">
-                                                            First Class
-                                                          </span>
-                                                        </button>
                                                       </div>
                                                     </div>
                                                   </div>
-                                                </div>
-                                              </div>
-                                              <span>{selectedCabin}</span>
+                                                )}
+                                              />
                                             </div>
                                           </div>
                                           <div className="top_form_search_button">
-                                            <button className="btn btn_theme btn_md">
+                                            <button
+                                              className="btn btn_theme btn_md"
+                                              type="submit"
+                                            >
                                               Search
                                             </button>
                                           </div>
@@ -1695,15 +1730,58 @@ const HomePage = () => {
                             <div className="row">
                               <div className="col-lg-12">
                                 <div className="tour_search_form">
-                                  <form action="#!">
+                                  {/* <form action="#!">
                                     <div className="row">
                                       <div className="col-lg-6 col-md-12 col-sm-12 col-12">
                                         <div className="flight_Search_boxed">
                                           <p>Destination</p>
                                           <input
+                                            {...registerHotel("cityName", {
+                                              required:
+                                                "city name City is required",
+                                            })}
                                             type="text"
+                                            value={hotelvalue}
+                                            onChange={handleHotelInputChange}
+                                            className="form-control"
                                             placeholder="Where are you going?"
+                                            onFocus={() =>
+                                              setShowHotelDropdown(false)
+                                            }
                                           />
+                                          <div
+                                            className={`dropdown-menu ${
+                                              showHotelDropdown ? "show" : ""
+                                            }`}
+                                            style={{
+                                              maxHeight: "240px",
+                                              overflowY: "auto",
+                                            }}
+                                          >
+                                            {hotelSuggestions.map(
+                                              (city, index) => (
+                                                <div key={index}>
+                                                  <button
+                                                    className="dropdown-item"
+                                                    onClick={() =>
+                                                      handleHotelSuggestionClick(
+                                                        city.city_name,
+                                                        setHotelValue,
+                                                        setShowHotelDropdown
+                                                      )
+                                                    }
+                                                  >
+                                                    {city.city_name}
+                                                  </button>
+                                                  {index <
+                                                    hotelSuggestions.length -
+                                                      1 && (
+                                                    <div className="dropdown-divider"></div>
+                                                  )}
+                                                </div>
+                                              )
+                                            )}
+                                          </div>
                                           <span>Where are you going?</span>
                                         </div>
                                       </div>
@@ -1877,7 +1955,7 @@ const HomePage = () => {
                                         </button>
                                       </div>
                                     </div>
-                                  </form>
+                                  </form> */}
                                 </div>
                               </div>
                             </div>
@@ -3179,121 +3257,7 @@ const HomePage = () => {
               </div>
             </div>
           </section>
-
-          {/* <!-- footer --> */}
-
-          <footer>
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-3 col-md-6">
-                  <div class="footer_logo">
-                    <img src={images.logo} alt="logo" />
-                    <p>
-                      #236/92/1A, 1st Floor, Venkataadri IT Park, Electronic
-                      City, Bangalore,Karnataka 560100, India.
-                    </p>
-                    <ul class="topbar-list d-lg-none d-md-none d-block mb-md-0 mb-4">
-                      <li>
-                        <a href="#!">
-                          <i class="fab fa-facebook" aria-hidden="true"></i>
-                        </a>
-                        <a href="#!">
-                          <i
-                            class="fab fa-twitter-square"
-                            aria-hidden="true"
-                          ></i>
-                        </a>
-                        <a href="#!">
-                          <i class="fab fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a href="#!">
-                          <i class="fab fa-linkedin" aria-hidden="true"></i>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!">
-                          <span>+011 234 567 89</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#!">
-                          <span>contact@domain.com</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <h5>About Us</h5>
-                  <ul>
-                    <li>
-                      <a href="#">Team</a>
-                    </li>
-                    <li>
-                      <a href="#">Contact Us </a>
-                    </li>
-                    <li>
-                      <a href="#">Company </a>
-                    </li>
-                    <li>
-                      <a href="#">Testimonials </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <h5>Quick Links</h5>
-                  <ul>
-                    <li>
-                      <a href="#">Flights</a>
-                    </li>
-                    <li>
-                      <a href="#">Hotels </a>
-                    </li>
-                    <li>
-                      <a href="#">Tours </a>
-                    </li>
-                    <li>
-                      <a href="#">Bus </a>
-                    </li>
-                    <li>
-                      <a href="#">Cab </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <h5>Legal</h5>
-                  <ul>
-                    <li>
-                      <a href="#">Terms & Conditions </a>
-                    </li>
-                    <li>
-                      <a href="#">Privacy Policy </a>
-                    </li>
-                    <li>
-                      <a href="#">User Agreement </a>
-                    </li>
-                    <li>
-                      <a href="#">Disclaimer Policy </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="copyright">
-              <div class="container">
-                <div class="row align-items-center">
-                  <div class="col-lg-6 col-md-6">
-                    <p class="m-md-0 mb-2 mt-0">
-                      © 2024 travelomatix.com All rights reserved.
-                    </p>
-                  </div>
-                  <div class="col-lg-6 text-md-end text-center col-md-6">
-                    <img src={images.payment} alt="payment" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </footer>
+          <Footer />
         </div>
       </main>
     </>

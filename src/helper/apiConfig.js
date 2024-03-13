@@ -24,3 +24,8 @@ export const formatDuration = (durationInMinutes) => {
     return `${minutes}m`;
   }
 };
+
+export const isUserLoggedIn = () => {
+  const userToken = localStorage.getItem("userToken");
+  return !!userToken; // Returns true if userToken is present, false otherwise
+};

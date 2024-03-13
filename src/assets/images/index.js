@@ -23,6 +23,11 @@ import tour_two from "./tour-two.png";
 import six_e from "./6E.gif";
 import i_5 from "./I5.gif";
 import stop_5 from "./stop_0.png";
+import available from "./available.png";
+import blocked from "./blocked.png";
+import not_exist from "./notexist.png";
+import occupied from "./occupied.png";
+import selected from "./selected.png";
 
 const images = {
   logo,
@@ -50,6 +55,11 @@ const images = {
   six_e,
   i_5,
   stop_5,
+  available,
+  blocked,
+  not_exist,
+  occupied,
+  selected,
 };
 
 export default images;

@@ -55,7 +55,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="main_header_arae list_header">
+      <header className="main_header_arae">
         <div className="topbar-area">
           <div className="container">
             <div className="row align-items-center">
