@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import images from "../../assets/images";
-import Navbar from "../../components/navbar/NavBar";
+import Navbar2 from "../../components/navbar/Navbar2";
 import OwlCarousel from "react-owl-carousel";
 import AuthContext from "../../context/AuthContext";
 import owlOptions from "../../others/owlOptions";
@@ -246,7 +246,7 @@ const HomePage = () => {
     <>
       <main>
         <div className="max-w-full">
-          <Navbar />
+          <Navbar2 />
           <section className="slider position-relative z-2">
             <OwlCarousel className="owl-carousel" {...owlOptions.option1}>
               <div className="item">

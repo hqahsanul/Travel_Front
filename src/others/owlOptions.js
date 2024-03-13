@@ -52,6 +52,26 @@ const owlOptions = {
       },
     },
   },
+
+  option4: {
+    loop: true,
+    margin: 0,
+    nav: true,
+    dots: false,
+    autoplay: true,
+    autoplayTimeout: 3000,
+    responsive: {
+      0: {
+        items: 3,
+      },
+      600: {
+        items: 4,
+      },
+      1000: {
+        items: 5,
+      },
+    },
+  },
 };
 
 export default owlOptions;

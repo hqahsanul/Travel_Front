@@ -1973,22 +1973,24 @@ footer ul li a:hover {
 }
 
 .booking-p-checkout {
-  margin-top: 74px;
   padding: 30px;
   background: #f4f8fb;
 }
+
 .book-det-top h3 {
   font-size: 16px;
   color: #8b3eea;
   font-weight: 500;
   margin-bottom: 10px;
 }
+
 .card-bo-li {
   background: #fff;
   padding: 12px 20px 10px;
   border-radius: 8px;
   font-size: 13px;
 }
+
 .fl-img {
   width: 30px;
   height: 30px;
@@ -2001,25 +2003,31 @@ footer ul li a:hover {
   border-radius: 3px;
   margin-right: 8px;
 }
+
 span.fl-name {
   font-weight: 500;
   color: #666;
 }
+
 .nopadding {
   padding: 0;
 }
+
 .card-bo-li p {
   font-size: 13px;
   margin: 0;
   line-height: 1;
   color: #000;
 }
+
 .fl-de-ml {
   width: 50%;
 }
+
 .fl-de-ml span {
   display: block;
 }
+
 span.fl-smal {
   color: #777;
   font-size: 11px;
@@ -2032,6 +2040,7 @@ span.fl-smal {
   margin-top: 20px;
   border: 1px solid #ddd;
 }
+
 .form-hedd {
   background: #e4d9f1;
   font-size: 16px;
@@ -2041,9 +2050,11 @@ span.fl-smal {
   font-weight: 500;
   color: #8b3eea;
 }
+
 .form-text {
   font-size: 13px;
 }
+
 .check-card {
   display: flex;
   align-items: flex-start;
@@ -2055,12 +2066,13 @@ span.fl-smal {
   cursor: pointer;
   border-color: #ddd;
 }
-.togalshow .form-select {
-  font-size: 14px;
-  height: 40px;
-  color: #555;
-}
-.togalshow .form-control {
+
+.togalshow .form-select,
+.togalshow .form-control,
+.inputbox .form-select,
+.inputbox .form-control,
+.form-card .form-control,
+.form-card .form-select {
   font-size: 14px;
   height: 40px;
   color: #555;
@@ -2082,10 +2094,12 @@ button.btn.btn-sub {
   margin: 15px 0 0;
   padding: 8px 25px;
 }
+
 a.frgotpaswrd {
   font-size: 13px;
   color: #7b7b7b;
 }
+
 .or-list {
   height: 100%;
   display: flex;
@@ -2093,12 +2107,14 @@ a.frgotpaswrd {
   justify-content: center;
   position: relative;
 }
+
 .or-list span {
   background: #fff;
   padding: 5px;
   position: relative;
   z-index: 2;
 }
+
 .or-list:before {
   position: absolute;
   left: 0;
@@ -2110,12 +2126,14 @@ a.frgotpaswrd {
   margin: 0 auto;
   z-index: 1;
 }
+
 .social-lo {
   display: flex;
   height: 100%;
   justify-content: center;
   align-items: center;
 }
+
 .btn-so a {
   display: block;
   padding: 10px;
@@ -2124,20 +2142,25 @@ a.frgotpaswrd {
   border-radius: 8px;
   margin: 10px 0;
 }
+
 a.goog-btn {
   background: #f50000;
 }
+
 a.fac-btn {
   background: #23527c;
 }
+
 .btn-so a i {
   margin-right: 15px;
 }
+
 .fare-sum {
   background: #fff;
   margin-top: 30px;
   border-radius: 8px;
 }
+
 .fare-hedding {
   padding: 8px 15px;
   background: #ececec;
@@ -2145,36 +2168,236 @@ a.fac-btn {
   border-top-right-radius: 8px;
   font-weight: 500;
 }
+
 .sum-card {
   margin: 15px;
   border-bottom: 1px solid #ddd;
   padding-bottom: 15px;
 }
+
 .fareleft {
   flex: 1;
   font-size: 14px;
   color: #777;
 }
+
 .sun-text {
   font-size: 14px;
   margin-bottom: 10px;
   color: #8b3eea;
 }
+
 .fareto {
   font-size: 14px;
   font-weight: 500;
   text-align: right;
 }
+
 .grandttext {
   font-size: 16px;
   flex: 1;
   color: #333;
 }
+
 .grandt.d-flex {
   padding: 0px 15px 15px;
 }
+
 .grandam {
   font-size: 16px;
   font-weight: 600;
   color: #f50000;
+}
+
+.inputbox {
+  background: #f4f8fb;
+  padding: 12px 15px 2px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.ecoupen .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.promosubmit {
+  background: #8b3eea;
+  border: 0;
+  height: 40px;
+  padding: 4px 25px;
+  color: #fff;
+}
+
+.gstinfo .accordion-button {
+  padding: 3px 15px;
+}
+
+.col-3.col-sm-2.text-end.just-f {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.ta-hedding {
+  margin-bottom: 30px;
+  font-size: 15px;
+  color: #484848;
+}
+
+span.formlabel {
+  font-size: 13px;
+  color: #666;
+}
+
+.ser-card .nav-pills .nav-link {
+  background: #eee;
+  color: #000;
+  margin: 0 7px;
+}
+
+.ser-card .nav-pills .nav-link i {
+  margin-right: 10px;
+}
+
+.ser-card .nav-pills .nav-link.active,
+.ser-card .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #8b3eea;
+}
+
+.gstinfo .accordion-button:not(.collapsed) {
+  color: #8b3eea;
+  background-color: #ffffff;
+  box-shadow: none;
+}
+
+.gstinfo .accordion-button {
+  color: #8b3eea;
+}
+
+.gstinfo .accordion-button:focus {
+  box-shadow: none;
+}
+
+ul.set-b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0 20px;
+}
+
+ul.set-b li {
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+ul.set-b li img {
+  max-width: 30px;
+  margin-right: 5px;
+}
+
+.flight-f {
+  background: url(../images/flight_diagram.png) no-repeat center top;
+  height: auto;
+  margin: 0px auto;
+}
+
+.flight-in {
+  width: 200px;
+  margin: 0px auto;
+  height: 1888px;
+}
+
+.flight-p {
+  width: 100%;
+  padding: 290px 0px;
+}
+
+.table-d tr:nth-of-type(odd) {
+  background-color: #f1f1f1;
+}
+
+.flight-p table td,
+.flight-p table th {
+  padding: 9px 4px !important;
+  font-size: 13px;
+  position: relative;
+  border-top: 1px solid #ddd;
+}
+
+.flight-p table th {
+  text-align: center;
+}
+
+.flight-p table td img {
+  width: 20px !important;
+  height: 17px !important;
+  transform: rotate(90deg);
+}
+
+.btn-f {
+  display: block;
+  background: #8b3eea;
+  color: #fff;
+  padding: 8px 25px;
+  width: max-content;
+  margin: 20px auto 20px;
+  border-radius: 5px;
+}
+
+.flight-btn {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
+table.r-table {
+  width: 100%;
+  border: 1px solid #ddd;
+  text-align: center;
+  margin-top: 30px;
+}
+
+table.r-table th {
+  background: #cdb1f1;
+  padding: 6px;
+  font-size: 13px;
+}
+
+tr.no-pb {
+  background: #d9dfec;
+}
+
+table.r-table th,
+table.r-table td {
+  padding: 6px;
+  font-size: 13px;
+}
+
+.beggcha {
+  font-size: 13px;
+  color: #777;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+span.removeb {
+  font-size: 16px;
+  margin-left: 10px;
+  color: #8b3eea;
+}
+
+travlrs {
+  font-size: 17px;
+}
+
+span.infantbay {
+  font-size: 13px;
+  color: #888;
+}
+
+.fasl-card {
+  padding: 15px;
+  text-align: right;
 }
