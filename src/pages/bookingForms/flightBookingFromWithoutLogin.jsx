@@ -1,8 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import images from "../../assets/images";
-import Footer from "../footer/footer";
-import Navbar from "../navbar/NavBar";
+import Footer from "../../components/footer/footer";
+import Navbar from "../../components/navbar/NavBar";
 
 const FlightBookingFromWithoutLogin = () => {
   return (

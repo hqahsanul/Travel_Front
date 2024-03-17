@@ -5,6 +5,8 @@ const pathObj = {
   getFlightData: "/api/search-flight",
   verifyOtp: "/api/verify-otp",
   getHotelSearchList: "/api/search-city?query=",
+  getHotelData: "/api/search-hotel",
+  getSingleHotelDetail: "/api/hotel-info?ResultToken=",
 };
 
 export default pathObj;

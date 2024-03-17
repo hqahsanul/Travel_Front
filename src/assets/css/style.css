@@ -12,6 +12,10 @@
   --transition: 0.4s all ease-in-out;
 }
 
+figure {
+  margin: 0;
+}
+
 html,
 body {
   height: 100%;
@@ -2400,4 +2404,1302 @@ span.infantbay {
 .fasl-card {
   padding: 15px;
   text-align: right;
+}
+
+.always-visible {
+  background-color: blue;
+  border-radius: 50%;
+  border: 1px solid red;
+}
+
+.hotel_detail_section {
+  background: #f7f7f7 none repeat scroll 0 0;
+  width: 100%;
+  padding: 15px 0;
+}
+
+.hotel_detail_section .hotel_details_left h2 {
+  font-size: 22px;
+  color: #0095ce;
+  font-weight: 500;
+}
+
+.show_section {
+  margin: 40px 0px;
+}
+.location_box {
+  width: 100%;
+  background: #fff;
+  padding: 6px 10px;
+  overflow: hidden;
+  display: block;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.11);
+  border: 1px solid #dbdbdb;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(219, 219, 219);
+  border-bottom: none;
+}
+
+.location_box p i {
+  margin-right: 7px;
+}
+
+.location_fx li {
+  margin-right: 7px;
+  color: #777;
+}
+.location_fx li:last-child {
+  margin: 0;
+}
+.location_fx ul .star-first {
+  color: #fc901b;
+}
+
+.htlamtnyt {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  border-bottom: 1px solid #d0d0d0;
+  padding-bottom: 10px;
+}
+
+.amthtlrs {
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
+  font-size: 40px;
+  color: #00a9d6;
+}
+
+.pernyt {
+  font-size: 15px;
+  color: #999;
+  padding: 0 5px;
+  font-weight: 500;
+}
+
+.stdrmac {
+  display: table;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+  padding: 5px 0;
+}
+
+.stdnonaclt {
+  display: table-cell;
+  float: left;
+  font-size: 18px;
+  color: #383e45;
+  font-weight: 500;
+}
+
+.amthtlrsstd {
+  font-size: 27px;
+  color: #00a9d6;
+  font-weight: bold;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.pernytdet {
+  font-size: 15px;
+  padding: 0 5px;
+  color: #383e45;
+  font-weight: 400;
+}
+
+.stdrmac {
+  display: table;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+  padding: 5px 0;
+}
+
+.stdnonacltfre {
+  display: table-cell;
+  float: left;
+  font-size: 18px;
+  color: #383e45;
+  font-weight: 500;
+}
+
+.untdate {
+  display: table-cell;
+  float: right;
+  font-size: 17px;
+  font-weight: 400;
+  color: #5e6063;
+  line-height: 27px;
+}
+
+.cheoutdv {
+  float: left;
+  width: 100%;
+  background: #efefef;
+  padding: 12px 15px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.11);
+}
+
+.chkdatetacell {
+  display: table;
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.chkin {
+  display: table-cell;
+  font-size: 16px;
+  color: #383e45;
+  font-weight: 600;
+  float: left;
+}
+
+.chkdate {
+  display: table-cell;
+  font-size: 15px;
+  color: #383e45;
+  font-weight: 500;
+  float: right;
+}
+
+.book-form {
+  width: 100%;
+  padding: 16px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.11);
+}
+.book-form #selectroom {
+  background: #fc901b none repeat scroll 0 0;
+  border: 1px solid #fc901b;
+  border-radius: 3px;
+  color: #fff;
+  display: block;
+  font-size: 16px;
+  padding: 12px 8px;
+  text-align: center;
+  width: 100%;
+}
+
+#section {
+  width: 500px;
+  height: 400px;
+  word-wrap: break-word;
+}
+
+.moretext {
+  display: none;
+}
+
+.romsfst .romtypestd {
+  font-size: 20px;
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: #0779bb;
+}
+.romsfst .noof_adult {
+  display: block;
+  width: 100%;
+}
+.noof_adult i {
+  padding: 0 8px 0 0;
+  font-size: 13px;
+}
+.mobile_hide {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+}
+.romconoutdv {
+  width: 100%;
+  display: block;
+  background: #fff;
+  margin: 0px 0 8px 0;
+  border: 1px solid #e6e6e6;
+  padding: 10px;
+}
+.romtypefrecan {
+  display: flex;
+  color: #fc901b;
+  width: 100%;
+  padding: 0;
+  font-weight: 500;
+  align-items: center;
+}
+.nopad.full_mobile p {
+  color: #000;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 0;
+  margin: 0 0 0 5px;
+  display: inline-block;
+}
+
+.noof_ave {
+  font-size: 13px;
+  color: #fff;
+  margin: 1px 5px;
+  padding: 2px 4px;
+  background: #3caf6f;
+  border-radius: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+.nopad.full_mobile a {
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+  float: left;
+  margin: 5px 0;
+  display: block;
+  width: 100%;
+}
+.noof_ave i {
+  margin-right: 5px;
+}
+.romtypefrecan i {
+  margin-right: 5px;
+}
+
+.nopad.full_mobile .d-flex li {
+  display: block !important;
+  color: #00a9d6;
+  font-size: 25px;
+  width: 64%;
+}
+.nopad.full_mobile .d-flex li .romtyprice {
+  width: 100%;
+}
+.nopad.full_mobile .d-flex li .ninenyt {
+  width: 100%;
+}
+.nopad.full_mobile .d-flex li .romtyprice {
+  color: #00a9d6;
+  font-size: 25px;
+}
+.nopad.full_mobile .d-flex li .ninenyt {
+  color: #666;
+  font-size: 15px;
+}
+.b-btn.bookallbtn.book-now-btn.rombtndv {
+  background: #fc901b none repeat scroll 0 0;
+  border: 1px solid #fc901b;
+  border-radius: 3px;
+  color: #fff;
+  display: block;
+  font-size: 18px;
+  padding: 8px 5px;
+  text-align: center;
+  width: 100%;
+}
+
+.show_box .accordion-item {
+  margin-bottom: 40px;
+}
+
+.show_box .accordion-button.collapsed {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.first_content strong {
+  display: block;
+  color: #333;
+  font-size: 16px;
+  line-height: 30px;
+}
+
+.show_box .accordion-button {
+  display: block !important;
+  font-size: 18px;
+  color: #c8ffd7;
+  color: #0096ce;
+  margin: 0px;
+  padding: 10px 15px;
+  font-weight: bold;
+  position: relative;
+}
+
+.show_box .accordion-button::before {
+  content: "\f107";
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: FontAwesome;
+  font-size: 22px;
+}
+
+.innertabs .mobile_view_header {
+  display: block !important;
+  font-size: 18px;
+  color: #c8ffd7;
+  color: #0096ce;
+  margin: 0px;
+  padding: 10px 15px;
+  font-weight: bold;
+}
+.innertabs {
+}
+.innertabs .padinnerntb.htlfac_lity {
+  padding: 10px 15px;
+}
+.facltyid {
+  color: #383e45;
+  display: block;
+  font-size: 14px;
+  padding: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.facltyid .glyphicon.glyphicon-check {
+  position: relative;
+}
+.facltyid .glyphicon.glyphicon-check::before {
+  content: "\f058";
+  position: absolute;
+  top: 50%;
+  left: -26px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  font-family: FontAwesome;
+}
+/********Responsive*******/
+
+@media (max-width: 1400px) {
+  .top_airline_left {
+    font-size: 13px;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .top_airline_left {
+    font-size: 12px;
+    padding: 0 13px;
+  }
+
+  .mean-container .mean-bar {
+    float: left;
+    width: 100%;
+    position: absolute;
+    background: 0 0;
+    padding: 20px 0 0;
+    z-index: 999;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    height: 35px;
+    top: -11px;
+  }
+
+  .top_airline_right .owl-nav {
+    display: none;
+  }
+
+  .top_airline_right {
+    width: 89%;
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .amthtlrs {
+    font-size: 25px;
+  }
+  .stdnonaclt {
+    font-size: 16px;
+  }
+  .hotel_details_right {
+    margin-top: 20px;
+  }
+  .details_section .col-md-8 {
+    width: 100%;
+    margin-top: 30px;
+  }
+  .details_section .col-md-4 {
+    width: 100%;
+  }
+  .details_section .row {
+    flex-direction: column-reverse;
+  }
+  .hotel_detail_section .col-md-8 {
+    width: 100%;
+  }
+  .hotel_detail_section .col-md-4 {
+    width: 100%;
+  }
+  .img_inner_box .row {
+    flex-direction: inherit;
+  }
+  .top_airline.d-flex {
+    display: none !important;
+  }
+  .list_right {
+    display: none;
+  }
+
+  .btn_serch.serch_mody {
+    display: block;
+  }
+
+  .col-md-3.slidebar_none {
+    display: none;
+  }
+
+  .listing_desbord .col-md-9 {
+    width: 100%;
+  }
+  .listing_desbord.tour_desbord .col-md-3.slidebar_none {
+    display: block;
+    width: 100%;
+  }
+  .mean-container .mean-bar {
+    top: 13px;
+  }
+
+  .sortul .filter_none {
+    width: 10%;
+    text-align: center;
+    padding-left: 0;
+    display: block;
+  }
+  .sortul .filter_none:before {
+    display: none;
+  }
+
+  .col-md-3.slidebar_none.open {
+    display: block;
+    position: absolute;
+    width: 50%;
+    z-index: 9;
+    top: 260px;
+  }
+
+  .airline_box.list_hotel .social_icon_list .bar_icon {
+    padding: 6px 9px;
+  }
+
+  .airline_box.list_hotel .social_icon_list .location_bar {
+    padding: 6px 9px;
+  }
+
+  .social_icon_list i {
+    display: block;
+  }
+}
+
+@media (max-width: 767px) {
+  .hotel_detail_section .hotel_details_left h2 {
+    font-size: 18px;
+  }
+  .details_section_left li {
+    margin-bottom: 10px;
+  }
+  .hotel_content {
+    text-align: center;
+  }
+
+  .hotel_content ul {
+    justify-content: center;
+  }
+
+  .listing_section.list_two_waep .list_left .col-6 {
+    width: 100%;
+  }
+  .listing_section.list_two_waep .list_left .row {
+    justify-content: center;
+  }
+  .listing_section.list_two_waep .list_left p {
+    text-align: center;
+  }
+
+  .sortul li::before {
+    display: none;
+  }
+
+  .mean-container .mean-bar {
+    top: -13px;
+  }
+
+  .btn_serch.serch_mody {
+    margin: auto;
+  }
+  .filter_none i {
+    display: block;
+    line-height: 38px;
+  }
+  .airline_box i {
+    display: none;
+  }
+  .social_icon_list i {
+    display: block;
+  }
+
+  .sortul li::before {
+    display: none;
+  }
+
+  .details_box .detail_fx .li_inner {
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+
+  .details_box .detail_fx .li_inner li p {
+    font-size: 10px;
+  }
+
+  .details_box .detail_fx .li_inner h2 {
+    font-size: 16px;
+  }
+  .details_box .detail_fx .li_inner li .x_img {
+    width: 27px;
+  }
+
+  .durtntime {
+    font-size: 12px;
+  }
+
+  .stop-value {
+    font-size: 13px;
+  }
+
+  .listing_section p {
+    font-size: 14px;
+  }
+  .sortul .filter_none i {
+    display: block;
+    cursor: pointer;
+  }
+  .listing_desbord.tour_desbord
+    .col-md-12.col-sm-6.col-xs-6.mobile_width.padfive {
+    width: 100%;
+  }
+  .listing_desbord.tour_desbord .hotel_content {
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .mean-container .mean-bar {
+    top: -18px;
+  }
+
+  .col-md-3.slidebar_none.open {
+    display: block;
+    position: absolute;
+    width: 100%;
+    z-index: 9;
+    top: 350px;
+  }
+
+  .booK_warp h3 {
+    font-size: 16px;
+  }
+
+  .booK_warp p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .airline_box.list_hotel .social_icon_list {
+    display: none;
+  }
+  .airline_box.list_hotel .sortul {
+    width: 100%;
+  }
+}
+
+/* tour details css */
+
+.lbl_txt {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.normalsel {
+  display: block;
+  height: 42px;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 3px;
+}
+.padselct {
+  padding-left: 15px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  color: #666;
+  font-size: 14px;
+  padding: 10.5px 20px 10.5px 35px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.searchsbmtfot::after {
+  content: "\f054";
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+  bottom: 0;
+  color: #fff;
+  font-family: FontAwesome;
+  line-height: 42px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 30px;
+}
+
+.searchsbmtfot {
+  position: relative;
+  background: #ff9800;
+  border-radius: 3px;
+}
+
+.searchsbmt {
+  background: #ff9800;
+  border: medium none;
+  color: #fff;
+  font-size: 16px;
+  line-height: 42px;
+  padding: 0 20px 0 0;
+  position: relative;
+  text-transform: uppercase;
+  width: 100%;
+  border-radius: 3px;
+}
+
+#contentTitle {
+  font-size: 23px;
+}
+
+.form_warp {
+  display: block;
+  margin-bottom: 15px;
+  overflow: hidden;
+  padding: 10px;
+  border: 1px solid #f5f5f5;
+  background: #ededed;
+}
+
+.details_inner_box.hotel_box figure img {
+  border-radius: 10px 0px 0px 10px;
+}
+
+/*****details-page-css*****/
+
+.details_section {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.details_section .details_section_left .nav-link {
+  display: block;
+  padding: 10px 18px;
+  border: 1px solid #0095ce;
+  border-radius: 4px 4px 0px 0px;
+  background: #0095ce;
+  font-size: 14px;
+  color: #fff;
+  margin: 0 1px;
+}
+
+.details_section .details_section_left .nav-link.active {
+  background: none repeat scroll 0 0 #fff;
+  border: 0 none;
+  color: #333;
+  ont-weight: 500;
+  border-radius: 4px 4px 0px 0px;
+  background: #fff;
+  font-size: 14px;
+  padding: 10px 18px;
+  color: #000;
+  border: 1px solid #ddd !important;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: rgb(221, 221, 221);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(221, 221, 221);
+  border-bottom: 1px solid #fff !important;
+  border-top: 3px solid #ff9800 !important;
+}
+
+.nav-tabs {
+  border-bottom: none;
+}
+
+.innertabsxl {
+  background: none repeat scroll 0 0 #fff;
+  border-top: 0;
+  padding: 10px;
+  width: 100%;
+}
+
+.htlrumrowxl {
+  margin-bottom: 10px;
+}
+
+.daytrip {
+  background: none repeat scroll 0 0 #ff9800;
+  margin-bottom: 10px;
+  max-width: 100px;
+}
+
+.daytrip strong {
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 30px;
+  padding: 0 20px;
+}
+
+.daytrip b {
+  background: none repeat scroll 0 0 #da8200;
+  color: #fff;
+  float: left;
+  font-size: 18px;
+  line-height: 30px;
+  padding: 0 10px;
+}
+
+.hotelhed {
+  color: #0088c7;
+  display: block;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.singleadrspara {
+  color: #666;
+  display: block;
+  line-height: 20px;
+  overflow: hidden;
+}
+
+.comenhtlsum {
+  color: #666;
+  display: block;
+  line-height: 20px;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.linebrk {
+  background: none repeat scroll 0 0 #e8e8e8;
+  display: block;
+  height: 1px;
+  margin: 10px 0 15px;
+  padding: 0;
+}
+
+.hedft {
+  color: #333;
+  display: block;
+  font-size: 16px;
+  margin: 0 0 10px;
+  overflow: hidden;
+}
+
+ul.checklistxl.checklist {
+  margin: 0;
+  padding: 0 0 0 30px;
+}
+
+.checklist.checklistxl li {
+  width: 100%;
+}
+
+.checklist li {
+  color: #666;
+  line-height: 22px;
+  font-size: 13px;
+  margin: 5px 0;
+  list-style-position: inside;
+  padding: 5px 5px 5px 20px;
+}
+.checklist li p {
+  color: #666;
+  line-height: 22px;
+  font-size: 13px;
+  margin: 5px 0;
+  list-style-position: inside;
+  padding: 5px 5px 5px 20px;
+}
+
+.ratingusr {
+  border-bottom: 1px solid #eee;
+  display: table;
+  margin: 10px 0;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.gallery-slider .owl-nav.disabled {
+  display: none !important;
+}
+
+.gallery-slider .owl-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+}
+.gallery-slider {
+  position: relative;
+}
+
+.details_section_right .img_box {
+  border: 1px solid #ddd;
+  display: block;
+  overflow: hidden;
+}
+
+.details_section_right figure img {
+  width: 100%;
+}
+.details_section_right .img_inner_box {
+  background: none repeat scroll 0 0 #f6f6f6;
+  display: block;
+  overflow: hidden;
+  padding: 20px 20px;
+}
+
+.bigpriced {
+  color: #16aae2;
+  display: block;
+  font-size: 22px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.snote {
+  color: #666;
+  display: block;
+  margin: 0 0 5px;
+  overflow: hidden;
+}
+
+.sdfr {
+  color: #333;
+  display: block;
+  overflow: hidden;
+}
+
+.booknowhtl {
+  display: table;
+  margin: 20px auto auto;
+  padding: 10px;
+  text-align: center;
+  width: 90%;
+  font-size: 16px;
+  color: #fff;
+  background: #ff9800;
+  border: 1px solid #ff9800;
+  padding: 8px 10px;
+  border-radius: 2px !important;
+  width: 100%;
+}
+
+.rating.mypacksy.mt10.mb10 {
+  text-align: right;
+  padding-top: 20px;
+}
+
+.rating span.star::before,
+.rating-no span.star::before {
+  content: "\f005";
+  padding-right: 1px;
+  color: #ff9800;
+  font-weight: 300;
+  font-size: 16px;
+  margin: 0 6px 0 0;
+}
+.rating span.star,
+.rating-no span.star {
+  font-family: FontAwesome;
+  font-weight: 400;
+  font-style: normal;
+  display: inline-block;
+}
+
+.mypacksy .star input {
+  left: 0;
+  opacity: 0;
+  position: absolute;
+}
+
+.rating.mypacksy.mt10.mb10 label {
+  margin-right: 6px;
+}
+
+.htlfull_dtls {
+  float: left;
+  width: 100%;
+  background: #fff;
+  padding: 10px 15px;
+  margin: 0;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.11);
+}
+
+.hotel_detail_section {
+  background: #f7f7f7 none repeat scroll 0 0;
+  width: 100%;
+  padding: 15px 0;
+}
+
+.hotel_detail_section .hotel_details_left h2 {
+  font-size: 22px;
+  color: #0095ce;
+  font-weight: 500;
+}
+
+.show_section {
+  margin: 40px 0px;
+}
+.location_box {
+  width: 100%;
+  background: #fff;
+  padding: 6px 10px;
+  overflow: hidden;
+  display: block;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.11);
+  border: 1px solid #dbdbdb;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(219, 219, 219);
+  border-bottom: none;
+}
+
+.location_box p i {
+  margin-right: 7px;
+}
+
+.location_fx li {
+  margin-right: 7px;
+  color: #777;
+}
+.location_fx li:last-child {
+  margin: 0;
+}
+.location_fx ul .star-first {
+  color: #fc901b;
+}
+
+.htlamtnyt {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  border-bottom: 1px solid #d0d0d0;
+  padding-bottom: 10px;
+}
+
+.amthtlrs {
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
+  font-size: 40px;
+  color: #00a9d6;
+}
+
+.pernyt {
+  font-size: 15px;
+  color: #999;
+  padding: 0 5px;
+  font-weight: 500;
+}
+
+.stdrmac {
+  display: table;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+  padding: 5px 0;
+}
+
+.stdnonaclt {
+  display: table-cell;
+  float: left;
+  font-size: 18px;
+  color: #383e45;
+  font-weight: 500;
+}
+
+.amthtlrsstd {
+  font-size: 27px;
+  color: #00a9d6;
+  font-weight: bold;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.pernytdet {
+  font-size: 15px;
+  padding: 0 5px;
+  color: #383e45;
+  font-weight: 400;
+}
+
+.stdrmac {
+  display: table;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+  padding: 5px 0;
+}
+
+.stdnonacltfre {
+  display: table-cell;
+  float: left;
+  font-size: 18px;
+  color: #383e45;
+  font-weight: 500;
+}
+
+.untdate {
+  display: table-cell;
+  float: right;
+  font-size: 17px;
+  font-weight: 400;
+  color: #5e6063;
+  line-height: 27px;
+}
+
+.cheoutdv {
+  float: left;
+  width: 100%;
+  background: #efefef;
+  padding: 12px 15px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.11);
+}
+
+.chkdatetacell {
+  display: table;
+  float: left;
+  width: 100%;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.chkin {
+  display: table-cell;
+  font-size: 16px;
+  color: #383e45;
+  font-weight: 600;
+  float: left;
+}
+
+.chkdate {
+  display: table-cell;
+  font-size: 15px;
+  color: #383e45;
+  font-weight: 500;
+  float: right;
+}
+
+.book-form {
+  width: 100%;
+  padding: 16px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.11);
+}
+.book-form #selectroom {
+  background: #fc901b none repeat scroll 0 0;
+  border: 1px solid #fc901b;
+  border-radius: 3px;
+  color: #fff;
+  display: block;
+  font-size: 16px;
+  padding: 12px 8px;
+  text-align: center;
+  width: 100%;
+}
+
+#section {
+  width: 500px;
+  height: 400px;
+  word-wrap: break-word;
+}
+
+.moretext {
+  display: none;
+}
+
+.romsfst .romtypestd {
+  font-size: 20px;
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: #0779bb;
+}
+.romsfst .noof_adult {
+  display: block;
+  width: 100%;
+}
+.noof_adult i {
+  padding: 0 8px 0 0;
+  font-size: 13px;
+}
+.mobile_hide {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+}
+.romconoutdv {
+  width: 100%;
+  display: block;
+  background: #fff;
+  margin: 0px 0 8px 0;
+  border: 1px solid #e6e6e6;
+  padding: 10px;
+}
+.romtypefrecan {
+  display: flex;
+  color: #fc901b;
+  width: 100%;
+  padding: 0;
+  font-weight: 500;
+  align-items: center;
+}
+.nopad.full_mobile p {
+  color: #000;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 0;
+  margin: 0 0 0 5px;
+  display: inline-block;
+}
+
+.noof_ave {
+  font-size: 13px;
+  color: #fff;
+  margin: 1px 5px;
+  padding: 2px 4px;
+  background: #3caf6f;
+  border-radius: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+.nopad.full_mobile a {
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+  float: left;
+  margin: 5px 0;
+  display: block;
+  width: 100%;
+}
+.noof_ave i {
+  margin-right: 5px;
+}
+.romtypefrecan i {
+  margin-right: 5px;
+}
+
+.nopad.full_mobile .d-flex li {
+  display: block !important;
+  color: #00a9d6;
+  font-size: 25px;
+  width: 64%;
+}
+.nopad.full_mobile .d-flex li .romtyprice {
+  width: 100%;
+}
+.nopad.full_mobile .d-flex li .ninenyt {
+  width: 100%;
+}
+.nopad.full_mobile .d-flex li .romtyprice {
+  color: #00a9d6;
+  font-size: 25px;
+}
+.nopad.full_mobile .d-flex li .ninenyt {
+  color: #666;
+  font-size: 15px;
+}
+.b-btn.bookallbtn.book-now-btn.rombtndv {
+  background: #fc901b none repeat scroll 0 0;
+  border: 1px solid #fc901b;
+  border-radius: 3px;
+  color: #fff;
+  display: block;
+  font-size: 18px;
+  padding: 8px 5px;
+  text-align: center;
+  width: 100%;
+}
+
+.show_box .accordion-item {
+  margin-bottom: 40px;
+}
+
+.show_box .accordion-button.collapsed {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.first_content strong {
+  display: block;
+  color: #333;
+  font-size: 16px;
+  line-height: 30px;
+}
+
+.show_box .accordion-button {
+  display: block !important;
+  font-size: 18px;
+  color: #c8ffd7;
+  color: #0096ce;
+  margin: 0px;
+  padding: 10px 15px;
+  font-weight: bold;
+  position: relative;
+}
+
+.show_box .accordion-button::before {
+  content: "\f107";
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: FontAwesome;
+  font-size: 22px;
+}
+
+.innertabs .mobile_view_header {
+  display: block !important;
+  font-size: 18px;
+  color: #c8ffd7;
+  color: #0096ce;
+  margin: 0px;
+  padding: 10px 15px;
+  font-weight: bold;
+}
+.innertabs {
+}
+.innertabs .padinnerntb.htlfac_lity {
+  padding: 10px 15px;
+}
+.facltyid {
+  color: #383e45;
+  display: block;
+  font-size: 14px;
+  padding: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.facltyid .glyphicon.glyphicon-check {
+  position: relative;
+}
+.facltyid .glyphicon.glyphicon-check::before {
+  content: "\f058";
+  position: absolute;
+  top: 50%;
+  left: -26px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  font-family: FontAwesome;
 }

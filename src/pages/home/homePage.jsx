@@ -12,26 +12,89 @@ import { useForm, Controller } from "react-hook-form";
 import { fixAbbrivation } from "../../helper/apiConfig";
 import LoaderContext from "../../context/LoaderContext";
 import ListContext from "../../context/ListContext";
+import RoomSection from "../../components/HotelRoomSection/hotelRoomSection";
 
 const HomePage = () => {
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
+  const [hotelvalue, setHotelValue] = useState("");
   const [fromSuggestions, setFromSuggestions] = useState([]);
   const [toSuggestions, setToSuggestions] = useState([]);
+  const [hotelSuggestions, setHotelSuggestions] = useState([]);
+  const [showHotelDropdown, setShowHotelDropdown] = useState(false);
+  const [hotelGuest, setHotelGuest] = useState([]);
+  const [hotelCountryCode, sethotelCountryCode] = useState();
+  const [hotelCityCode, sethotelCityCode] = useState();
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [abbrFromValue, setAbbrFromValue] = useState("");
   const [abbrToValue, setAbbrToValue] = useState("");
-  const [adultCount, setAdultCount] = useState(2);
+  const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
   const [selectedCabin, setSelectedCabin] = useState("Business");
   const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
   const passengerDropdownRef = useRef(null);
+  const hotelDropdownRef = useRef(null);
   const { setLoading, loading } = useContext(LoaderContext);
 
-  const { getFlightListData, flightListData, toursitData } =
+  const [rooms, setRooms] = useState([{ id: 1, adultCount: 2, childCount: 0 }]);
+  const [totalAdults, setTotalAdults] = useState(2);
+  const [totalChild, setTotalChild] = useState(0);
+
+  const handleAddRoom = () => {
+    const newRoom = { id: rooms.length + 1, adultCount: 1, childCount: 0 };
+    setRooms([...rooms, newRoom]);
+  };
+
+  useEffect(() => {
+    let adults = 0;
+    let children = 0;
+    rooms.forEach((room) => {
+      adults += room.adultCount;
+      children += room.childCount;
+    });
+    setTotalAdults(adults);
+    setTotalChild(children);
+  }, [rooms]);
+
+  const handleHotelGuest = (type, action, roomId) => {
+    setRooms((prevRooms) => {
+      return prevRooms.map((room) => {
+        if (room.id === roomId) {
+          switch (type) {
+            case "adult":
+              return {
+                ...room,
+                adultCount:
+                  action === "add" ? room.adultCount + 1 : room.adultCount - 1,
+              };
+            case "child":
+              return {
+                ...room,
+                childCount:
+                  action === "add" ? room.childCount + 1 : room.childCount - 1,
+              };
+            default:
+              return room;
+          }
+        }
+        return room;
+      });
+    });
+  };
+
+  const handleSubmitHotelrooms = () => {
+    const payload = rooms.map((room) => ({
+      NoOfAdults: Number(room.adultCount),
+      NoOfChild: Number(room.childCount),
+    }));
+    setHotelGuest(payload);
+    toggleHotelDropdown();
+  };
+
+  const { getFlightListData, flightListData, toursitData, getHotelListData } =
     useContext(ListContext);
 
   const navigate = useNavigate();
@@ -53,6 +116,23 @@ const HomePage = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   const handleOutsideClick = (event) => {
+  //     if (
+  //       hotelDropdownRef.current &&
+  //       !hotelDropdownRef.current.contains(event.target)
+  //     ) {
+  //       setShowHotelDropdown(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleOutsideClick);
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   };
+  // }, []);
+
   const handlePassengerChange = (type, action) => {
     switch (type) {
       case "adult":
@@ -65,7 +145,7 @@ const HomePage = () => {
           action === "add" ? childCount + 1 : Math.max(childCount - 1, 0)
         );
         break;
-      case "infant":
+      case "room":
         setInfantCount(
           action === "add" ? infantCount + 1 : Math.max(infantCount - 1, 0)
         );
@@ -75,12 +155,40 @@ const HomePage = () => {
     }
   };
 
+  // const handleHotelGuest = (type, action) => {
+  //   switch (type) {
+  //     case "adult":
+  //       setAdultCount(
+  //         action === "add" ? adultCount + 1 : Math.max(adultCount - 1, 0)
+  //       );
+  //       break;
+  //     case "child":
+  //       setChildCount(
+  //         action === "add" ? childCount + 1 : Math.max(childCount - 1, 0)
+  //       );
+  //       break;
+  //     case "room":
+  //       setHotelRoomCount(
+  //         action === "add"
+  //           ? hotelRoomCount + 1
+  //           : Math.max(hotelRoomCount - 1, 0)
+  //       );
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
   const handleCabinChange = (cabin) => {
     setSelectedCabin(cabin);
   };
 
   const togglePassengerDropdown = () => {
     setShowPassengerDropdown(!showPassengerDropdown);
+  };
+
+  const toggleHotelDropdown = () => {
+    setShowHotelDropdown(!showHotelDropdown);
   };
 
   const stopPropagation = (e) => {
@@ -91,7 +199,7 @@ const HomePage = () => {
     setSelectedDate(e.target.value);
   };
 
-  const getSearchList = async (query) => {
+  const getflightSearchList = async (query) => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_APP_API_BASE_URL}${
@@ -113,18 +221,27 @@ const HomePage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (fromValue.length > 0) {
-  //     console.log("FromLog", fromValue);
-  //     getSearchList(fromValue).then((result) => setFromSuggestions(result));
-  //   }
-
-  //   if (toValue.length > 0) {
-  //     console.log("toValue", toValue);
-
-  //     getSearchList(toValue).then((result) => setToSuggestions(result));
-  //   }
-  // }, [fromValue, toValue]);
+  const getHotelSearchList = async (query) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_APP_API_BASE_URL}${
+          ApiPath.getHotelSearchList
+        }${query}`
+      );
+      if (
+        response.data &&
+        response.data.result &&
+        response.data.result.length > 0
+      ) {
+        return response.data.result;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      console.error("Error fetching search list:", error);
+      return [];
+    }
+  };
 
   useEffect(() => {
     if (fromSuggestions.length > 0) {
@@ -148,7 +265,7 @@ const HomePage = () => {
     setFromValue(inputValue);
 
     if (inputValue.length > 0) {
-      getSearchList(inputValue).then((result) => {
+      getflightSearchList(inputValue).then((result) => {
         setFromSuggestions(result);
       });
       setShowFromDropdown(inputValue.length > 0);
@@ -161,7 +278,9 @@ const HomePage = () => {
     const inputValue = e.target.value;
     setToValue(inputValue);
     if (inputValue.length > 0) {
-      getSearchList(inputValue).then((result) => setToSuggestions(result));
+      getflightSearchList(inputValue).then((result) =>
+        setToSuggestions(result)
+      );
       setShowToDropdown(inputValue.length > 0);
     } else {
       setShowToDropdown(false);
@@ -236,6 +355,83 @@ const HomePage = () => {
       }
     } catch (error) {
       console.error("Error fetching flight data list:", error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleHotelInputChange = (e) => {
+    const inputValue = e.target.value;
+    setHotelValue(inputValue);
+    if (inputValue.length > 0) {
+      getHotelSearchList(inputValue).then((result) =>
+        setHotelSuggestions(result)
+      );
+      setShowHotelDropdown(inputValue.length > 0);
+    } else {
+      setShowHotelDropdown(false);
+    }
+  };
+
+  const handleHotelSuggestionClick = (
+    selectedCity,
+    countryCode,
+    cityCode,
+    setInputValue,
+    setCountryCode,
+    setCityCode,
+    setShowDropdown,
+    e
+  ) => {
+    console.log("hello");
+    console.log("sleted city", selectedCity);
+    e.preventDefault();
+    setInputValue(selectedCity); // Set the Abbr value
+    setCountryCode(countryCode); // Set the Abbr value
+    setCityCode(cityCode); // Set the Abbr value
+    setShowDropdown(false);
+  };
+
+  const {
+    register: registerHotel,
+    handleSubmit: handleSubmitHotel,
+    formState: { errors: hotelformErrors },
+  } = useForm();
+
+  const handleHotelformSubmit = async (data) => {
+    const checkInDate = new Date(data.journeyDate);
+    const checkOutDate = new Date(data.returnDdate);
+
+    console.log("checkInDate", checkInDate);
+    console.log("checkOutDate", checkOutDate);
+    // Calculate the difference in milliseconds between the two dates
+    const timeDifference = checkOutDate.getTime() - checkInDate.getTime();
+
+    // Convert the difference from milliseconds to days
+    const numberOfNights = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+    let apiPayload = {
+      CheckInDate: data.journeyDate,
+      NoOfNights: numberOfNights,
+      CountryCode: hotelCountryCode,
+      CityId: hotelCityCode,
+      GuestNationality: "IN",
+      NoOfRooms: hotelGuest.length,
+      RoomGuests: hotelGuest,
+    };
+
+    try {
+      setLoading(true);
+      const response = await getHotelListData(apiPayload);
+      // console.log("response", response);
+      if (response?.length > 0) {
+        localStorage.setItem("hotelPayload", JSON.stringify(apiPayload));
+        // localStorage.setItem("toursitPayload", JSON.stringify(tourData));
+        navigate("/hotel-list");
+      }
+    } catch (error) {
+      console.error("Error fetching hotel data list:", error);
       return [];
     } finally {
       setLoading(false);
@@ -603,7 +799,7 @@ const HomePage = () => {
                                                 >
                                                   {adultCount +
                                                     childCount +
-                                                    infantCount}{" "}
+                                                    infantCount}
                                                   Passengers
                                                 </button>
                                                 <div
@@ -1519,6 +1715,7 @@ const HomePage = () => {
                                               <input
                                                 type="date"
                                                 value="2022-05-03"
+                                                required
                                               />
                                               <span>Thursday</span>
                                             </div>
@@ -1676,7 +1873,10 @@ const HomePage = () => {
                                         </div>
                                       </div>
                                       <div className="top_form_search_button">
-                                        <button className="btn btn_theme btn_md">
+                                        <button
+                                          className="btn btn_theme btn_md"
+                                          onClick={() => navigate("/tour-list")}
+                                        >
                                           Search
                                         </button>
                                       </div>
@@ -1695,15 +1895,66 @@ const HomePage = () => {
                             <div className="row">
                               <div className="col-lg-12">
                                 <div className="tour_search_form">
-                                  <form action="#!">
+                                  <form
+                                    onSubmit={handleSubmitHotel(
+                                      handleHotelformSubmit
+                                    )}
+                                  >
                                     <div className="row">
                                       <div className="col-lg-6 col-md-12 col-sm-12 col-12">
                                         <div className="flight_Search_boxed">
                                           <p>Destination</p>
-                                          <input
-                                            type="text"
-                                            placeholder="Where are you going?"
-                                          />
+                                          <div className="dropdown">
+                                            <input
+                                              required
+                                              type="text"
+                                              value={hotelvalue}
+                                              onChange={handleHotelInputChange}
+                                              className="form-control"
+                                              placeholder="Where are you going?"
+                                              onFocus={() =>
+                                                setShowHotelDropdown(false)
+                                              }
+                                            />
+                                            <div
+                                              className={`dropdown-menu ${
+                                                showHotelDropdown ? "show" : ""
+                                              }`}
+                                              style={{
+                                                maxHeight: "240px",
+                                                overflowY: "auto",
+                                              }}
+                                            >
+                                              {hotelSuggestions.map(
+                                                (city, index) => (
+                                                  <div key={index}>
+                                                    <button
+                                                      className="dropdown-item borde border-1 border-danger"
+                                                      onClick={(e) =>
+                                                        handleHotelSuggestionClick(
+                                                          city.city_name,
+                                                          city.country_code,
+                                                          city.city_code,
+                                                          setHotelValue,
+                                                          sethotelCountryCode,
+                                                          sethotelCityCode,
+                                                          setShowHotelDropdown,
+                                                          e
+                                                        )
+                                                      }
+                                                    >
+                                                      {city.city_name}
+                                                    </button>
+                                                    {index <
+                                                      hotelSuggestions.length -
+                                                        1 && (
+                                                      <div className="dropdown-divider"></div>
+                                                    )}
+                                                  </div>
+                                                )
+                                              )}
+                                            </div>
+                                          </div>
                                           <span>Where are you going?</span>
                                         </div>
                                       </div>
@@ -1714,7 +1965,10 @@ const HomePage = () => {
                                               <p>Journey date</p>
                                               <input
                                                 type="date"
-                                                value="2022-05-03"
+                                                {...registerHotel(
+                                                  "journeyDate"
+                                                )}
+                                                placeholder="2022-05-03"
                                               />
                                               <span>Thursday</span>
                                             </div>
@@ -1722,7 +1976,10 @@ const HomePage = () => {
                                               <p>Return date</p>
                                               <input
                                                 type="date"
-                                                value="2022-05-05"
+                                                placeholder="2022-05-03"
+                                                {...registerHotel(
+                                                  "returnDdate"
+                                                )}
                                               />
                                               <span>Thursday</span>
                                             </div>
@@ -1731,148 +1988,81 @@ const HomePage = () => {
                                       </div>
                                       <div className="col-lg-2 col-md-6 col-sm-12 col-12">
                                         <div className="flight_Search_boxed dropdown_passenger_area">
-                                          <p>Passenger, Class</p>
-                                          <div className="dropdown">
+                                          <p>
+                                            {" "}
+                                            {`${rooms.length} room, ${totalAdults} adult, ${totalChild} child`}
+                                          </p>
+                                          <div
+                                            className="dropdown"
+                                            onClick={toggleHotelDropdown}
+                                            // ref={hotelDropdownRef}
+                                          >
                                             <button
                                               className="dropdown-toggle final-count"
-                                              data-toggle="dropdown"
                                               type="button"
                                               id="dropdownMenuButton1"
                                               data-bs-toggle="dropdown"
                                               aria-expanded="false"
                                             >
-                                              0 Passenger
+                                              {`${rooms.length} room, ${
+                                                totalAdults + totalChild
+                                              } guests`}
                                             </button>
                                             <div
-                                              className="dropdown-menu dropdown_passenger_info"
+                                              className={`dropdown-menu dropdown_passenger_info ${
+                                                showHotelDropdown ? "show" : ""
+                                              }`}
                                               aria-labelledby="dropdownMenuButton1"
+                                              onClick={stopPropagation}
                                             >
                                               <div className="traveller-calulate-persons">
                                                 <div className="passengers">
-                                                  <h6>Passengers</h6>
-                                                  <div className="passengers-types">
-                                                    <div className="passengers-type">
-                                                      <div className="text">
-                                                        <span className="count pcount">
-                                                          2
-                                                        </span>
-                                                        <div className="type-label">
-                                                          <p>Adult</p>
-                                                          <span>12+ yrs</span>
-                                                        </div>
+                                                  <h6>Guets</h6>
+                                                  <div className="passengers-types  ">
+                                                    {rooms.map((room) => (
+                                                      <div key={room.id}>
+                                                        <RoomSection
+                                                          roomId={room.id}
+                                                          adultCount={
+                                                            room.adultCount
+                                                          }
+                                                          childCount={
+                                                            room.childCount
+                                                          }
+                                                          handleHotelGuest={
+                                                            handleHotelGuest
+                                                          }
+                                                        />
                                                       </div>
-                                                      <div className="button-set">
-                                                        <button
-                                                          type="button"
-                                                          className="btn-add"
-                                                        >
-                                                          <i className="fas fa-plus"></i>
-                                                        </button>
-                                                        <button
-                                                          type="button"
-                                                          className="btn-subtract"
-                                                        >
-                                                          <i className="fas fa-minus"></i>
-                                                        </button>
-                                                      </div>
+                                                    ))}
+                                                    <div className="d-flex align-items-center justify-content-between ">
+                                                      <button
+                                                        type="button"
+                                                        onClick={handleAddRoom}
+                                                      >
+                                                        Add Room
+                                                      </button>
+                                                      <button
+                                                        type="button"
+                                                        onClick={
+                                                          handleSubmitHotelrooms
+                                                        }
+                                                      >
+                                                        Submit
+                                                      </button>
                                                     </div>
-                                                    <div className="passengers-type">
-                                                      <div className="text">
-                                                        <span className="count ccount">
-                                                          0
-                                                        </span>
-                                                        <div className="type-label">
-                                                          <p className="fz14 mb-xs-0">
-                                                            Children
-                                                          </p>
-                                                          <span>
-                                                            2 - Less than 12 yrs
-                                                          </span>
-                                                        </div>
-                                                      </div>
-                                                      <div className="button-set">
-                                                        <button
-                                                          type="button"
-                                                          className="btn-add-c"
-                                                        >
-                                                          <i className="fas fa-plus"></i>
-                                                        </button>
-                                                        <button
-                                                          type="button"
-                                                          className="btn-subtract-c"
-                                                        >
-                                                          <i className="fas fa-minus"></i>
-                                                        </button>
-                                                      </div>
-                                                    </div>
-                                                    <div className="passengers-type">
-                                                      <div className="text">
-                                                        <span className="count incount">
-                                                          0
-                                                        </span>
-                                                        <div className="type-label">
-                                                          <p className="fz14 mb-xs-0">
-                                                            Infant
-                                                          </p>
-                                                          <span>
-                                                            Less than 2 yrs
-                                                          </span>
-                                                        </div>
-                                                      </div>
-                                                      <div className="button-set">
-                                                        <button
-                                                          type="button"
-                                                          className="btn-add-in"
-                                                        >
-                                                          <i className="fas fa-plus"></i>
-                                                        </button>
-                                                        <button
-                                                          type="button"
-                                                          className="btn-subtract-in"
-                                                        >
-                                                          <i className="fas fa-minus"></i>
-                                                        </button>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                                <div className="cabin-selection">
-                                                  <h6>Cabin Class</h6>
-                                                  <div className="cabin-list">
-                                                    <button
-                                                      type="button"
-                                                      className="label-select-btn"
-                                                    >
-                                                      <span className="muiButton-label">
-                                                        Economy
-                                                      </span>
-                                                    </button>
-                                                    <button
-                                                      type="button"
-                                                      className="label-select-btn active"
-                                                    >
-                                                      <span className="muiButton-label">
-                                                        Business
-                                                      </span>
-                                                    </button>
-                                                    <button
-                                                      type="button"
-                                                      className="label-select-btn"
-                                                    >
-                                                      <span className="MuiButton-label">
-                                                        First Class
-                                                      </span>
-                                                    </button>
                                                   </div>
                                                 </div>
                                               </div>
                                             </div>
                                           </div>
-                                          <span>Business</span>
                                         </div>
                                       </div>
                                       <div className="top_form_search_button">
-                                        <button className="btn btn_theme btn_md">
+                                        <button
+                                          type="submit"
+                                          className="btn btn_theme btn_md"
+                                        >
                                           Search
                                         </button>
                                       </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState, useMemo } from "react";
 import { LuSearch } from "react-icons/lu";
 import images from "../../assets/images";
 import OwlCarousel from "react-owl-carousel";
-import Navbar from "../navbar/NavBar";
+import Navbar from "../../components/navbar/NavBar";
 import axios from "axios";
 import ApiPath from "../../utils/ApiPath";
 import { apiPost } from "../../utils/ApiFetch";

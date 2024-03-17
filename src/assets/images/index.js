@@ -28,6 +28,10 @@ import blocked from "./blocked.png";
 import not_exist from "./notexist.png";
 import occupied from "./occupied.png";
 import selected from "./selected.png";
+import hotel from "./hotel.webp";
+import SrinagarTour from "./SrinagarTour.jpg";
+import traveller from "./traveller.jpg";
+import traveller1 from "./traveller1.jpg";
 
 const images = {
   logo,
@@ -60,6 +64,10 @@ const images = {
   not_exist,
   occupied,
   selected,
+  hotel,
+  SrinagarTour,
+  traveller,
+  traveller1,
 };
 
 export default images;
