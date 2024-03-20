@@ -12,6 +12,7 @@ import { ListProvider } from "./context/ListContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
+      {/* <AlertContextProvider> */}
       <LoaderContextProvider>
         <AuthProvider>
           <ListProvider>
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           </ListProvider>
         </AuthProvider>
       </LoaderContextProvider>
+      {/* </AlertContextProvider> */}
     </BrowserRouter>
   </React.StrictMode>
 );

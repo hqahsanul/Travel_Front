@@ -17,60 +17,117 @@ import owlOptions from "../../others/owlOptions";
 
 const FlightList = () => {
   const { setLoading, loading } = useContext(LoaderContext);
-  const { getFlightListData, flightListData, toursitData } =
+  const { getFlightListData, flightListData } =
     useContext(ListContext);
   const Navigate = useNavigate();
+  const location = useLocation();
 
   const [searchListData, setSearchListData] = useState([]);
   const [toursitDetails, setToursitDetails] = useState();
 
-  useEffect(() => {
-    console.log("useEffect called");
-    console.log("flighData", flightListData);
-    console.log("toursitData", toursitData);
+  const { flightResponse, tourData } = location.state
 
-    const fetchFlightListData = async () => {
-      try {
-        setLoading(true);
 
-        // Retrieve data from localStorage with default values
-        const apiPayload = localStorage.getItem("flightPayload") || "{}";
-        const toursitPayload = localStorage.getItem("toursitPayload") || "{}";
+  const fetchFlightListData = async () => {
+    try {
+      setLoading(true);
 
-        console.log("flightPayload", apiPayload);
-        console.log("toursitPayload", toursitPayload);
+      // Retrieve data from localStorage with default values
+      const apiPayload = localStorage.getItem("flightPayload") || "{}";
+      // const toursitPayload = localStorage.getItem("toursitPayload") || "{}";
 
-        // Use the retrieved objects directly
-        const apiPayloadObject = JSON.parse(apiPayload);
-        const toursitPayloadObject = JSON.parse(toursitPayload);
+      console.log("flightPayload", apiPayload);
+      // console.log("toursitPayload", toursitPayload);
 
-        // Call the asynchronous function and await the result
-        const response = await getFlightListData(apiPayloadObject);
-        console.log("response", response);
+      // Use the retrieved objects directly
+      const apiPayloadObject = JSON.parse(apiPayload);
+      // const toursitPayloadObject = JSON.parse(toursitPayload);
 
-        // Set state based on the response
-        setSearchListData(response);
-        setToursitDetails(toursitPayloadObject);
-      } catch (error) {
-        console.log("Error while fetching flight list data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      // Call the asynchronous function and await the result
+      const response = await getFlightListData(apiPayloadObject);
+      console.log("response", response);
 
-    // Check if flightListData is undefined or has a length less than or equal to 0
-    if (!flightListData || (flightListData.length <= 0 && !toursitData)) {
-      console.log("entering unavailable");
-      fetchFlightListData();
-    } else {
-      // If flightListData and toursitData are not undefined, set the state
-      setSearchListData(flightListData);
-      setToursitDetails(toursitData);
+      // Set state based on the response
+      setSearchListData(response);
+      // setToursitDetails(toursitPayloadObject);
+    } catch (error) {
+      console.log("Error while fetching flight list data", error);
+    } finally {
+      setLoading(false);
     }
-  }, [flightListData, toursitData]);
+  };
 
-  const handleBooking = () => {
-    Navigate("/flight-booking");
+  useEffect(() => {
+    console.log("tourData", tourData);
+    setToursitDetails(tourData)
+  }, [tourData])
+
+  useEffect(() => {
+    if (flightResponse) {
+      console.log("flightResponse", flightResponse);
+      setSearchListData(flightResponse)
+    } else {
+      fetchFlightListData()
+    }
+  }, [flightResponse])
+
+
+
+
+  // useEffect(() => {
+  //   console.log("useEffect called");
+  //   console.log("flighData", flightListData);
+
+  //   const fetchFlightListData = async () => {
+  //     try {
+  //       setLoading(true);
+
+  //       // Retrieve data from localStorage with default values
+  //       const apiPayload = localStorage.getItem("flightPayload") || "{}";
+  //       // const toursitPayload = localStorage.getItem("toursitPayload") || "{}";
+
+  //       console.log("flightPayload", apiPayload);
+  //       // console.log("toursitPayload", toursitPayload);
+
+  //       // Use the retrieved objects directly
+  //       const apiPayloadObject = JSON.parse(apiPayload);
+  //       // const toursitPayloadObject = JSON.parse(toursitPayload);
+
+  //       // Call the asynchronous function and await the result
+  //       const response = await getFlightListData(apiPayloadObject);
+  //       console.log("response", response);
+
+  //       // Set state based on the response
+  //       setSearchListData(response);
+  //       // setToursitDetails(toursitPayloadObject);
+  //     } catch (error) {
+  //       console.log("Error while fetching flight list data", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   // Check if flightListData is undefined or has a length less than or equal to 0
+  //   if (!flightListData || (flightListData.length <= 0)) {
+  //     console.log("entering unavailable");
+  //     fetchFlightListData();
+  //   } else {
+  //     // If flightListData and toursitData are not undefined, set the state
+  //     setSearchListData(flightListData);
+  //   }
+  // }, [flightListData]);
+
+  const handleBooking = (item) => {
+    console.log("handleBooking", item)
+    if (tourData) {
+      Navigate("/flight-booking", {
+        state: {
+          bookingDetails: item,
+          toursitDetails: tourData
+        }
+      });
+    }
+
   };
 
   return (
@@ -517,7 +574,7 @@ const FlightList = () => {
                                         : "Non-Refundable"}
                                     </p>
                                     <button
-                                      onClick={handleBooking}
+                                      onClick={() => handleBooking(item)}
                                       className="btn btn-info"
                                     >
                                       Book Now

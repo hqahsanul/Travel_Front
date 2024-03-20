@@ -13,6 +13,10 @@ import { fixAbbrivation } from "../../helper/apiConfig";
 import LoaderContext from "../../context/LoaderContext";
 import ListContext from "../../context/ListContext";
 import RoomSection from "../../components/HotelRoomSection/hotelRoomSection";
+import DataNotFoundAlert from "../../components/alert/dataNotFoundAlert";
+import Swal from "sweetalert2";
+import { IoIosRemoveCircle, IoIosAdd } from "react-icons/io";
+
 
 const HomePage = () => {
   const [fromValue, setFromValue] = useState("");
@@ -35,6 +39,7 @@ const HomePage = () => {
   const [infantCount, setInfantCount] = useState(0);
   const [selectedCabin, setSelectedCabin] = useState("Business");
   const [showPassengerDropdown, setShowPassengerDropdown] = useState(false);
+  const [showHotelGuestDropdown, setShowHotelGuestDropdown] = useState(false);
   const passengerDropdownRef = useRef(null);
   const hotelDropdownRef = useRef(null);
   const { setLoading, loading } = useContext(LoaderContext);
@@ -58,6 +63,15 @@ const HomePage = () => {
     setTotalAdults(adults);
     setTotalChild(children);
   }, [rooms]);
+
+
+  const handleRemoveRoom = (roomId) => {
+    if (rooms.length === 1) {
+      return;
+    }
+    setRooms((prevRooms) => prevRooms.filter((room) => room.id !== roomId));
+  };
+
 
   const handleHotelGuest = (type, action, roomId) => {
     setRooms((prevRooms) => {
@@ -187,10 +201,6 @@ const HomePage = () => {
     setShowPassengerDropdown(!showPassengerDropdown);
   };
 
-  const toggleHotelDropdown = () => {
-    setShowHotelDropdown(!showHotelDropdown);
-  };
-
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
@@ -202,8 +212,7 @@ const HomePage = () => {
   const getflightSearchList = async (query) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_BASE_URL}${
-          ApiPath.getFlightSearchList
+        `${import.meta.env.VITE_APP_API_BASE_URL}${ApiPath.getFlightSearchList
         }${query}`
       );
       if (
@@ -224,8 +233,7 @@ const HomePage = () => {
   const getHotelSearchList = async (query) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_BASE_URL}${
-          ApiPath.getHotelSearchList
+        `${import.meta.env.VITE_APP_API_BASE_URL}${ApiPath.getHotelSearchList
         }${query}`
       );
       if (
@@ -351,7 +359,12 @@ const HomePage = () => {
       if (response?.length > 0) {
         localStorage.setItem("flightPayload", JSON.stringify(data));
         localStorage.setItem("toursitPayload", JSON.stringify(tourData));
-        navigate("/flight-list");
+        navigate("/flight-list", {
+          state: {
+            flightResponse: response,
+            tourData: tourData
+          }
+        });
       }
     } catch (error) {
       console.error("Error fetching flight data list:", error);
@@ -362,6 +375,7 @@ const HomePage = () => {
   };
 
   const handleHotelInputChange = (e) => {
+    console.log("hello");
     const inputValue = e.target.value;
     setHotelValue(inputValue);
     if (inputValue.length > 0) {
@@ -393,6 +407,14 @@ const HomePage = () => {
     setShowDropdown(false);
   };
 
+  const toggleHotelDropdown = () => {
+    setShowHotelGuestDropdown(!showHotelGuestDropdown);
+  };
+
+  const handleHotelInputClick = () => {
+    setShowHotelDropdown(false);
+  };
+
   const {
     register: registerHotel,
     handleSubmit: handleSubmitHotel,
@@ -421,14 +443,27 @@ const HomePage = () => {
       RoomGuests: hotelGuest,
     };
 
+    let HotelData = {
+      cityname: hotelvalue,
+      CheckInDate: data.journeyDate,
+      checkOutDate: data.returnDdate,
+      NoOfNights: numberOfNights,
+      CountryCode: hotelCountryCode,
+      NoOfRooms: hotelGuest.length,
+      RoomGuests: hotelGuest,
+    }
+
     try {
       setLoading(true);
       const response = await getHotelListData(apiPayload);
-      // console.log("response", response);
       if (response?.length > 0) {
         localStorage.setItem("hotelPayload", JSON.stringify(apiPayload));
-        // localStorage.setItem("toursitPayload", JSON.stringify(tourData));
-        navigate("/hotel-list");
+        navigate("/hotel-list", {
+          state: {
+            hotelResponse: response,
+            hotelData: HotelData
+          }
+        });
       }
     } catch (error) {
       console.error("Error fetching hotel data list:", error);
@@ -639,11 +674,10 @@ const HomePage = () => {
                                                   } // Close the dropdown on initial click
                                                 />
                                                 <div
-                                                  className={`dropdown-menu ${
-                                                    showFromDropdown
-                                                      ? "show"
-                                                      : ""
-                                                  }`}
+                                                  className={`dropdown-menu ${showFromDropdown
+                                                    ? "show"
+                                                    : ""
+                                                    }`}
                                                   style={{
                                                     maxHeight: "240px",
                                                     overflowY: "auto",
@@ -667,9 +701,9 @@ const HomePage = () => {
                                                         </button>
                                                         {index <
                                                           fromSuggestions.length -
-                                                            1 && (
-                                                          <div className="dropdown-divider"></div>
-                                                        )}
+                                                          1 && (
+                                                            <div className="dropdown-divider"></div>
+                                                          )}
                                                       </div>
                                                     )
                                                   )}
@@ -708,9 +742,8 @@ const HomePage = () => {
                                                   } // Close the dropdown on initial click
                                                 />
                                                 <div
-                                                  className={`dropdown-menu ${
-                                                    showToDropdown ? "show" : ""
-                                                  }`}
+                                                  className={`dropdown-menu ${showToDropdown ? "show" : ""
+                                                    }`}
                                                   style={{
                                                     maxHeight: "240px",
                                                     overflowY: "auto",
@@ -734,9 +767,9 @@ const HomePage = () => {
                                                         </button>
                                                         {index <
                                                           toSuggestions.length -
-                                                            1 && (
-                                                          <div className="dropdown-divider"></div>
-                                                        )}
+                                                          1 && (
+                                                            <div className="dropdown-divider"></div>
+                                                          )}
                                                       </div>
                                                     )
                                                   )}
@@ -803,11 +836,10 @@ const HomePage = () => {
                                                   Passengers
                                                 </button>
                                                 <div
-                                                  className={`dropdown-menu dropdown_passenger_info ${
-                                                    showPassengerDropdown
-                                                      ? "show"
-                                                      : ""
-                                                  }`}
+                                                  className={`dropdown-menu dropdown_passenger_info ${showPassengerDropdown
+                                                    ? "show"
+                                                    : ""
+                                                    }`}
                                                   aria-labelledby="dropdownMenuButton1"
                                                   onClick={stopPropagation}
                                                 >
@@ -944,12 +976,11 @@ const HomePage = () => {
                                                       <div className="cabin-list">
                                                         <button
                                                           type="button"
-                                                          className={`label-select-btn ${
-                                                            selectedCabin ===
+                                                          className={`label-select-btn ${selectedCabin ===
                                                             "Economy"
-                                                              ? "active"
-                                                              : ""
-                                                          }`}
+                                                            ? "active"
+                                                            : ""
+                                                            }`}
                                                           onClick={() =>
                                                             handleCabinChange(
                                                               "Economy"
@@ -962,12 +993,11 @@ const HomePage = () => {
                                                         </button>
                                                         <button
                                                           type="button"
-                                                          className={`label-select-btn ${
-                                                            selectedCabin ===
+                                                          className={`label-select-btn ${selectedCabin ===
                                                             "Business"
-                                                              ? "active"
-                                                              : ""
-                                                          }`}
+                                                            ? "active"
+                                                            : ""
+                                                            }`}
                                                           onClick={() =>
                                                             handleCabinChange(
                                                               "Business"
@@ -980,12 +1010,11 @@ const HomePage = () => {
                                                         </button>
                                                         <button
                                                           type="button"
-                                                          className={`label-select-btn ${
-                                                            selectedCabin ===
+                                                          className={`label-select-btn ${selectedCabin ===
                                                             "First Class"
-                                                              ? "active"
-                                                              : ""
-                                                          }`}
+                                                            ? "active"
+                                                            : ""
+                                                            }`}
                                                           onClick={() =>
                                                             handleCabinChange(
                                                               "First Class"
@@ -1917,9 +1946,8 @@ const HomePage = () => {
                                               }
                                             />
                                             <div
-                                              className={`dropdown-menu ${
-                                                showHotelDropdown ? "show" : ""
-                                              }`}
+                                              className={`dropdown-menu ${showHotelDropdown ? "show" : ""
+                                                }`}
                                               style={{
                                                 maxHeight: "240px",
                                                 overflowY: "auto",
@@ -1947,9 +1975,9 @@ const HomePage = () => {
                                                     </button>
                                                     {index <
                                                       hotelSuggestions.length -
-                                                        1 && (
-                                                      <div className="dropdown-divider"></div>
-                                                    )}
+                                                      1 && (
+                                                        <div className="dropdown-divider"></div>
+                                                      )}
                                                   </div>
                                                 )
                                               )}
@@ -1995,7 +2023,7 @@ const HomePage = () => {
                                           <div
                                             className="dropdown"
                                             onClick={toggleHotelDropdown}
-                                            // ref={hotelDropdownRef}
+                                            ref={hotelDropdownRef}
                                           >
                                             <button
                                               className="dropdown-toggle final-count"
@@ -2003,15 +2031,14 @@ const HomePage = () => {
                                               id="dropdownMenuButton1"
                                               data-bs-toggle="dropdown"
                                               aria-expanded="false"
+
                                             >
-                                              {`${rooms.length} room, ${
-                                                totalAdults + totalChild
-                                              } guests`}
+                                              {`${rooms.length} room, ${totalAdults + totalChild
+                                                } guests`}
                                             </button>
                                             <div
-                                              className={`dropdown-menu dropdown_passenger_info ${
-                                                showHotelDropdown ? "show" : ""
-                                              }`}
+                                              className={`dropdown-menu dropdown_passenger_info ${showHotelGuestDropdown ? "show" : ""
+                                                }`}
                                               aria-labelledby="dropdownMenuButton1"
                                               onClick={stopPropagation}
                                             >
@@ -2020,28 +2047,30 @@ const HomePage = () => {
                                                   <h6>Guets</h6>
                                                   <div className="passengers-types  ">
                                                     {rooms.map((room) => (
-                                                      <div key={room.id}>
-                                                        <RoomSection
-                                                          roomId={room.id}
-                                                          adultCount={
-                                                            room.adultCount
-                                                          }
-                                                          childCount={
-                                                            room.childCount
-                                                          }
-                                                          handleHotelGuest={
-                                                            handleHotelGuest
-                                                          }
-                                                        />
-                                                      </div>
+                                                      <>
+                                                        {rooms.length > 1 ?
+                                                          <div className="flex justify-content-end " type="button" onClick={() => handleRemoveRoom(room.id)}>
+                                                            <IoIosRemoveCircle /> Remove room
+                                                          </div>
+                                                          : ""
+                                                        }
+                                                        <div key={room.id}>
+                                                          <RoomSection
+                                                            roomId={room.id}
+                                                            adultCount={room.adultCount}
+                                                            childCount={room.childCount}
+                                                            handleHotelGuest={handleHotelGuest} />
+                                                          <hr />
+                                                        </div>
+                                                      </>
                                                     ))}
                                                     <div className="d-flex align-items-center justify-content-between ">
-                                                      <button
+                                                      <div
                                                         type="button"
                                                         onClick={handleAddRoom}
                                                       >
-                                                        Add Room
-                                                      </button>
+                                                        <IoIosAdd size={26} /> Add Room
+                                                      </div>
                                                       <button
                                                         type="button"
                                                         onClick={
@@ -2056,6 +2085,7 @@ const HomePage = () => {
                                               </div>
                                             </div>
                                           </div>
+                                          <span>Select Guest</span>
                                         </div>
                                       </div>
                                       <div className="top_form_search_button">

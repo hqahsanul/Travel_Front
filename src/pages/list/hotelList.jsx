@@ -19,53 +19,54 @@ const HotelList = () => {
   const { setLoading, loading } = useContext(LoaderContext);
   const { hotelListData, getHotelListData } = useContext(ListContext);
   const Navigate = useNavigate();
+  const location = useLocation();
 
-  const [HotelsListDetails, setHotelsListData] = useState([]);
-  // const [toursitDetails, setToursitDetails] = useState();
+
+  const [hotelDetails, setHotelDetails] = useState();
+  const [guestData, setGuestData] = useState();
+
+  const { hotelResponse, hotelData } = location.state
+
+
+  const fetchHotelListData = async () => {
+    try {
+      setLoading(true);
+
+      // Retrieve data from localStorage with default values
+      const apiPayload = localStorage.getItem("hotelPayload") || "{}";
+
+      console.log("hotelPayload", apiPayload);
+
+      // Use the retrieved objects directly
+      const apiPayloadObject = JSON.parse(apiPayload);
+
+      // Call the asynchronous function and await the result
+      const response = await getHotelListData(apiPayloadObject);
+
+      // Set state based on the response
+      setHotelDetails(response);
+      //   setToursitDetails(toursitPayloadObject);
+    } catch (error) {
+      console.log("Error while fetching hotel list data", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   useEffect(() => {
-    console.log("useEffect called");
-    console.log("hotelListData", hotelListData);
+    console.log("tourData", hotelData);
+    setGuestData(hotelData)
+  }, [hotelData])
 
-    const fetchHotelListData = async () => {
-      try {
-        setLoading(true);
-
-        // Retrieve data from localStorage with default values
-        //   const apiPayload = localStorage.getItem("flightPayload") || "{}";
-        //   const toursitPayload = localStorage.getItem("toursitPayload") || "{}";
-
-        //   console.log("flightPayload", apiPayload);
-        //   console.log("toursitPayload", toursitPayload);
-
-        // Use the retrieved objects directly
-        //   const apiPayloadObject = JSON.parse(apiPayload);
-        //   const toursitPayloadObject = JSON.parse(toursitPayload);
-
-        // Call the asynchronous function and await the result
-        const response = await getHotelListData({});
-        // console.log("response", response);
-
-        // Set state based on the response
-        setHotelsListData(response);
-        //   setToursitDetails(toursitPayloadObject);
-      } catch (error) {
-        console.log("Error while fetching hotel list data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Check if flightListData is undefined or has a length less than or equal to 0
-    if (!HotelsListDetails || HotelsListDetails.length <= 0) {
-      console.log("entering unavailable");
-      fetchHotelListData();
+  useEffect(() => {
+    if (hotelResponse) {
+      setHotelDetails(hotelResponse)
     } else {
-      // If flightListData and toursitData are not undefined, set the state
-      setHotelsListData(hotelListData);
-      // setToursitDetails(toursitData);
+      fetchHotelListData()
     }
-  }, [hotelListData]);
+  }, [hotelResponse])
+
 
   const handleBooking = (hotelId) => {
     Navigate("/hotel-details", {
@@ -79,62 +80,67 @@ const HotelList = () => {
     <main>
       <div className="max-w-full">
         <Navbar />
-        {/* {toursitDetails && (
-          <section className="listing_section">
-            <div className="container">
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="list_left">
-                    <div className="row">
-                      <div className="col-6">
-                        <h2>{toursitDetails.JourneyType}</h2>
-                        <p>{`${toursitDetails.departureCity} (${toursitDetails.departurAbbr}) To ${toursitDetails.destinationCity} (${toursitDetails.destinationAbbr})`}</p>
+        {guestData && (
+          <section class="listing_section list_two_waep">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="list_left">
+                    <div class="row">
+                      <div class="col-6">
+                        <p>{guestData.cityname} </p>
                       </div>
-                      <div className="col-6">
-                        <h2>Departure</h2>
-                        <p>
-                          {moment(toursitDetails.DepartureDate).format(
-                            "ddd, DD MMM"
-                          )}
-                        </p>
+                      <div class="col-3">
+                        <h2>Check In</h2>
+                        <p>{guestData.CheckInDate}</p>
+                      </div>
+                      <div class="col-3">
+                        <h2>Check Out</h2>
+                        <p>{guestData.checkOutDate}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="list_right">
+                <div class="col-md-6">
+                  <div class="list_right">
                     <div className="row">
                       <div className="col-md-3">
-                        <h2>Adult</h2>
-                        <p>{toursitDetails.AdultCount || "0"}</p>
+                        <h2>Room</h2>
+                        <p>{guestData.RoomGuests.length}</p>
+                      </div>
+                      <div className="col-md-3">
+                        <h2>Adults</h2>
+                        <p>
+                          {guestData.RoomGuests.reduce(
+                            (totalAdults, room) => totalAdults + room.NoOfAdults,
+                            0
+                          )}
+                        </p>
                       </div>
                       <div className="col-md-3">
                         <h2>Child</h2>
-                        <p>{toursitDetails.ChildCount || "0"}</p>
-                      </div>
-                      <div className="col-md-3">
-                        <h2>Infant</h2>
-                        <p>{toursitDetails.InfantCount || "0"}</p>
+                        <p>
+                          {guestData.RoomGuests.reduce(
+                            (totalChildren, room) => totalChildren + room.NoOfChild,
+                            0
+                          )}
+                        </p>
                       </div>
                       <div className="col-md-3">
                         <div className="btn_serch">
-                          <a href="#" className="btn btn-info modify">
-                            Modify Search
-                          </a>
+                          <a href="#" className="btn btn-info modify">Modify Search</a>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="btn_serch serch_mody">
-                    <a href="#" className="btn btn-info modify">
-                      Modify Search
-                    </a>
+                  <div class="btn_serch serch_mody">
+                    <a href="#" class="btn btn-info modify">Modify Search</a>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-        )} */}
+        )}
 
         <section className="listing_desbord">
           <div className="container">
@@ -408,8 +414,8 @@ const HotelList = () => {
                   </div>
                   <div className="details_box">
                     <ul className="detail_fx">
-                      {HotelsListDetails && HotelsListDetails.length > 0 ? (
-                        HotelsListDetails.map((item, index) => (
+                      {hotelDetails && hotelDetails.length > 0 ? (
+                        hotelDetails.map((item, index) => (
                           <li className="li_inner" key={index}>
                             <div className="details_inner_box hotel_box">
                               <div className="row">

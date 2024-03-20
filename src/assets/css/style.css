@@ -3703,3 +3703,11 @@ ul.checklistxl.checklist {
   font-size: 16px;
   font-family: FontAwesome;
 }
+
+.my-custom-class {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000; /* Adjust as needed */
+}
