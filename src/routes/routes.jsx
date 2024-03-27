@@ -9,6 +9,7 @@ import HotelList from "../pages/list/hotelList";
 import HotelDetailsPage from "../pages/hotelDetailsPage/hotelDetailsPage";
 import TourList from "../pages/list/tourList";
 import TourDetailsPage from "../pages/tourDetails/tourDetailsPage";
+import BusList from "../pages/list/busList";
 
 const AllRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const AllRoutes = () => {
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/flight-list" element={<FlightList />} />
         <Route exact path="/hotel-list" element={<HotelList />} />
+        <Route exact path="/bus-list" element={<BusList />} />
         <Route exact path="/flight-booking" element={<BookingForm />} />
         <Route exact path="/verify-otp" element={<OtpVerificationForm />} />
         <Route exact path="/hotel-details" element={<HotelDetailsPage />} />

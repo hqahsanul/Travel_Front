@@ -32,6 +32,8 @@ import hotel from "./hotel.webp";
 import SrinagarTour from "./SrinagarTour.jpg";
 import traveller from "./traveller.jpg";
 import traveller1 from "./traveller1.jpg";
+import carSeat from "./car-seat.png";
+import locationBus from "./location-Bus.png";
 
 const images = {
   logo,
@@ -68,6 +70,8 @@ const images = {
   SrinagarTour,
   traveller,
   traveller1,
+  carSeat,
+  locationBus
 };
 
 export default images;

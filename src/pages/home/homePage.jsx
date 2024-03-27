@@ -2512,7 +2512,10 @@ const HomePage = () => {
                                                 </div>
                                               </div>
                                               <div className="top_form_search_button">
-                                                <button className="btn btn_theme btn_md">
+                                                <button className="btn btn_theme btn_md"
+                                                  onClick={() => navigate("/bus-list")}
+
+                                                >
                                                   Search
                                                 </button>
                                               </div>
